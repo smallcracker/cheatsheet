@@ -1,0 +1,14 @@
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor backups
+*.swp
+*.swo
+*.tmp
+*.bak
+*~
+
+# Logs
+*.log

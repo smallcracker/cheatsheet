@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDB Cheatsheet - 一图流风格</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: transparent;
+            --text-primary: #333333;
+            --text-secondary: #444444;
+            --accent-color: #00008b;
+            /* Deep Blue */
+            --code-bg: #acbecd;
+            /* Light Blue */
+            --code-text: #000000;
+            --border-radius: 0;
+            --spacing: 10px;
+            --font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --code-font: "Consolas", "Monaco", "Courier New", monospace;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1e1e1e;
+                --card-bg: transparent;
+                --text-primary: #e0e0e0;
+                --text-secondary: #cccccc;
+                --accent-color: #82aaff;
+                --code-bg: #2d3b4d;
+                --code-text: #d6deeb;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-size: 13px;
+            line-height: 1.3;
+            padding: 15px;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-height: 800px) {
+            body {
+                height: auto;
+                overflow: auto;
+            }
+        }
+
+        header {
+            text-align: left;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: var(--accent-color);
+            margin-bottom: 0;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        main {
+            column-count: 6;
+            column-gap: 20px;
+            column-rule: 1px solid #e0e0e0;
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+
+        @media (max-width: 1400px) {
+            main {
+                column-count: 5;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            main {
+                column-count: 4;
+            }
+        }
+
+        @media (max-width: 600px) {
+            main {
+                column-count: 2;
+            }
+        }
+
+        .section {
+            background: var(--card-bg);
+            padding: 0;
+            margin-bottom: 20px;
+            break-inside: auto;
+            /* Allow splitting across columns */
+            border: none;
+            box-shadow: none;
+        }
+
+        .section h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--accent-color);
+            border-bottom: none;
+            padding-bottom: 0;
+            font-weight: bold;
+            display: block;
+            break-after: avoid;
+            /* Keep title with first item */
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column-reverse;
+            /* Description on top, Code on bottom */
+            margin-bottom: 8px;
+            font-size: 13px;
+            break-inside: avoid;
+            /* Don't split individual items */
+        }
+
+        .item:last-child {
+            margin-bottom: 0;
+        }
+
+        .cmd {
+            font-family: var(--code-font);
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 4px 8px;
+            border-radius: 0;
+            font-weight: normal;
+            white-space: pre-wrap;
+            /* Allow wrapping for long commands */
+            word-break: break-all;
+            display: block;
+            width: 100%;
+            margin-top: 2px;
+        }
+
+        .cmd::before {
+            content: "";
+            color: #888;
+            user-select: none;
+        }
+
+        .desc {
+            color: var(--text-primary);
+            text-align: left;
+            font-size: 13px;
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+
+        /* Remove special block handling since everything is block now */
+        .item.block {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .item.block .desc {
+            text-align: left;
+            margin: 0 0 2px 0;
+        }
+
+        @media print {
+            body {
+                background: white;
+                height: auto;
+                overflow: visible;
+                padding: 0;
+            }
+
+            main {
+                column-count: 6;
+            }
+
+            .cmd {
+                background-color: #c9dbeaff !important;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>PDB Cheatsheet</h1>
+        <p class="subtitle">一图流速查表 | Generated from pdb.md</p>
+    </header>
+
+    <main>
+        <!-- 模块 1: 如何开始调试 -->
+        <div class="section">
+            <h2>如何开始调试</h2>
+            <div class="item block">
+                <span class="cmd">import pdb; pdb.set_trace()</span>
+                <span class="desc">插入代码启动调试</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">breakpoint()</span>
+                <span class="desc">启动默认调试器pdb 不需要import pdb</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">python -m pdb script.py</span>
+                <span class="desc">如不想修改代码 可修改运行指令</span>
+            </div>
+        </div>
+
+        <!-- 模块 2: lineno是什么 -->
+        <div class="section">
+            <h2>lineno是什么</h2>
+            <div class="item block">
+                <!-- <span class="cmd"></span> -->
+                <span class="desc">lineno（行号）指源代码文件中的行号（从 1 开始）<br>在命令中使用时 它指定文件中的特定行</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">b 10</span>
+                <span class="desc">在当前文件的第 10 行设置断点</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">until 15</span>
+                <span class="desc">执行到当前函数的第 15 行</span>
+            </div>
+        </div>
+
+        <!-- 模块 3: 执行控制 -->
+        <div class="section">
+            <h2>执行控制</h2>
+            <div class="item block">
+                <span class="cmd">s(tep)</span>
+                <span class="desc">执行当前行 进入被调用函数</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">n(ext)</span>
+                <span class="desc">执行到当前函数的下一行 不进入函数内部</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">c(ont(inue))</span>
+                <span class="desc">继续运行直到断点</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">r(eturn)</span>
+                <span class="desc">执行到当前函数返回</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">unt(il) [lineno]</span>
+                <span class="desc">执行到指定行号或当前行之后<br>若无参数，执行完当前行（含循环）<br>指定行号指的是当前函数中的行号</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">run [args] / restart [args]</span>
+                <span class="desc">保留断点重启程序<br>重启时不会重新编译、加载模块 不会检测代码变更</span>
+            </div>
+        </div>
+
+        <!-- 模块 4: 断点管理 -->
+        <div class="section">
+            <h2>断点管理</h2>
+            <div class="item block">
+                <span class="cmd">b(reak) [([filename:]lineno | function) [, condition]]</span>
+                <span class="desc">设置断点 支持条件<br>无参数则会列出所有当前断点的详细信息</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">b myfile.py:20</span>
+                <span class="desc">myfile.py 的第 20 行设置断点</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">b mymod.utils.add</span>
+                <span class="desc">mymod/utils.py 的 add 函数入口设置断点</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">b 10 x > 5</span>
+                <span class="desc">在第 10 行设置断点 当 x > 5 时触发</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">b add x == 10</span>
+                <span class="desc">在 add 函数入口设置断点 当 x == 10 时触发</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">b myfile.py:10 x > 5</span>
+                <span class="desc">在 myfile.py 第 10 行设置条件断点（x > 5）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">tbreak [([filename:]lineno | function) [, condition]]</span>
+                <span class="desc">临时断点，命中一次后删除</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">cl(ear) [filename:lineno | bpnumber ...]</span>
+                <span class="desc">清除断点<br>无参数则会清除调试会话中设置的所有断点<br>不会修改或删除源代码中的 breakpoint() </span>
+            </div>
+            <div class="item block">
+                <span class="cmd">disable bpnumber ...</span>
+                <span class="desc">禁用断点（保留但不触发）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">enable bpnumber ...</span>
+                <span class="desc">启用断点</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">ignore bpnumber [count]</span>
+                <span class="desc">设置断点忽略次数</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">condition bpnumber [condition]</span>
+                <span class="desc">为断点添加/删除条件</span>
+            </div>
+        </div>
+
+        <!-- 模块 5: 检查和显示 -->
+        <div class="section">
+            <h2>检查和显示</h2>
+            <div class="item block">
+                <span class="cmd">w(here) [count]</span>
+                <span class="desc">显示堆栈（箭头>表示当前帧）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">u(p) [count]</span>
+                <span class="desc">在堆栈中上移动帧</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">d(own) [count]</span>
+                <span class="desc">在堆栈中下移动帧</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">l(ist) [first[, last]]</span>
+                <span class="desc">列出源码（当前行周围 11 行 默认延续上次）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">ll | longlist</span>
+                <span class="desc">列出当前函数全部源码</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">a(rgs)</span>
+                <span class="desc">显示当前函数参数</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">p expression</span>
+                <span class="desc">打印表达式值</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pp expression</span>
+                <span class="desc">美观打印表达式</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">whatis expression</span>
+                <span class="desc">显示表达式类型</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">whatis x / [1,2]</span>
+                <span class="desc">例：&lt;class 'int'&gt; / &lt;class 'list'&gt;</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">source expression</span>
+                <span class="desc">显示源代码（函数/类）。无法获取源码（如内置函数）会报错</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">display [expression]</span>
+                <span class="desc">每次停止时显示表达式（变化时提示）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">undisplay [expression]</span>
+                <span class="desc">停止显示表达式</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">retval</span>
+                <span class="desc">显示当前函数返回值。需先执行 r(eturn) 到函数结束，否则报错</span>
+            </div>
+        </div>
+
+        <!-- 模块 6: 其他功能 -->
+        <div class="section">
+            <h2>其他功能</h2>
+            <div class="item block">
+                <span class="cmd">! statement</span>
+                <span class="desc">执行任意 Python 语句</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">h(elp) [command]</span>
+                <span class="desc">显示帮助（help pdb 显示完整文档）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">q(uit)</span>
+                <span class="desc">退出调试器（程序中止）</span>
+            </div>
+        </div>
+
+        <!-- 模块 7: 注意事项 -->
+        <div class="section">
+            <h2>注意事项</h2>
+            <div class="item block">
+                <!-- <span class="cmd"></span> -->
+                <span class="desc">PDB 支持 Tab 补全 快捷变量 .pdbrc 文件配置别名</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">p $__name__</span>
+                <span class="desc">检查当前模块</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">p $__file__</span>
+                <span class="desc">检查当前文件位置</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">p $__doc__</span>
+                <span class="desc">查看函数文档</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">p $__frame.f_locals</span>
+                <span class="desc">查看局部变量</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">p $__frame.f_globals</span>
+                <span class="desc">查看全局变量</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">p $__frame.f_lineno</span>
+                <span class="desc">输出当前行号</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">p $__exception__</span>
+                <span class="desc">查看异常</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">p $__traceback__</span>
+                <span class="desc">查看堆栈</span>
+            </div>
+        </div>
+
+        <!-- 模块 8: 实用技巧 -->
+        <div class="section">
+            <h2>实用技巧</h2>
+            <div class="item block">
+                <span class="cmd">p locals()</span>
+                <span class="desc">快速查看当前帧的局部变量字典</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">p globals()</span>
+                <span class="desc">快速查看当前帧的全局变量字典</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">interact</span>
+                <span class="desc">进入交互式解释器（带当前帧上下文），适合临时多步探索</span>
+            </div>
+            <div class="item block">
+                <!-- <span class="cmd"></span> -->
+                <span class="desc">小习惯：先用 where/w 看堆栈，再用 u/d 切到目标帧，然后用 args/locals()/p 观察变量</span>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>

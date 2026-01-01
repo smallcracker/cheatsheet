@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheatsheet 模板 - 一图流风格</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: transparent;
+            --text-primary: #333333;
+            --text-secondary: #444444;
+            --accent-color: #00008b;
+            /* Deep Blue */
+            --code-bg: #e6f2ff;
+            /* Light Blue */
+            --code-text: #000000;
+            --border-radius: 0;
+            --spacing: 10px;
+            --font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --code-font: "Consolas", "Monaco", "Courier New", monospace;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1e1e1e;
+                --card-bg: transparent;
+                --text-primary: #e0e0e0;
+                --text-secondary: #cccccc;
+                --accent-color: #82aaff;
+                --code-bg: #2d3b4d;
+                --code-text: #d6deeb;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-size: 13px;
+            line-height: 1.3;
+            padding: 15px;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-height: 800px) {
+            body {
+                height: auto;
+                overflow: auto;
+            }
+        }
+
+        header {
+            text-align: left;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: var(--accent-color);
+            margin-bottom: 0;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        main {
+            column-count: 4;
+            column-gap: 20px;
+            column-rule: 1px solid #e0e0e0;
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+
+        @media (max-width: 1400px) {
+            main {
+                column-count: 3;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            main {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 600px) {
+            main {
+                column-count: 1;
+            }
+        }
+
+        .section {
+            background: var(--card-bg);
+            padding: 0;
+            margin-bottom: 20px;
+            break-inside: auto;
+            /* Allow splitting across columns */
+            border: none;
+            box-shadow: none;
+        }
+
+        .section h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--accent-color);
+            border-bottom: none;
+            padding-bottom: 0;
+            font-weight: bold;
+            display: block;
+            break-after: avoid;
+            /* Keep title with first item */
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column-reverse;
+            /* Description on top, Code on bottom */
+            margin-bottom: 8px;
+            font-size: 13px;
+            break-inside: avoid;
+            /* Don't split individual items */
+        }
+
+        .item:last-child {
+            margin-bottom: 0;
+        }
+
+        .cmd {
+            font-family: var(--code-font);
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 4px 8px;
+            border-radius: 0;
+            font-weight: normal;
+            white-space: pre-wrap;
+            /* Allow wrapping for long commands */
+            word-break: break-all;
+            display: block;
+            width: 100%;
+            margin-top: 2px;
+        }
+
+        .cmd::before {
+            content: "$ ";
+            color: #888;
+            user-select: none;
+        }
+
+        .desc {
+            color: var(--text-primary);
+            text-align: left;
+            font-size: 13px;
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+
+        /* Remove special block handling since everything is block now */
+        .item.block {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .item.block .desc {
+            text-align: left;
+            margin: 0 0 2px 0;
+        }
+
+        @media print {
+            body {
+                background: white;
+                height: auto;
+                overflow: visible;
+                padding: 0;
+            }
+
+            main {
+                column-count: 4;
+            }
+
+            .cmd {
+                background-color: #f0f8ff !important;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Git Cheatsheet</h1>
+        <p class="subtitle">一图流速查表 | Generated Template</p>
+    </header>
+
+    <main>
+        <!-- 模块 1: 配置 -->
+        <div class="section">
+            <h2>配置 (Config)</h2>
+            <div class="item block">
+                <span class="cmd">git config --global user.name "name"</span>
+                <span class="desc">设置用户名</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">git config --global user.email "email"</span>
+                <span class="desc">设置邮箱</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git config --list</span>
+                <span class="desc">查看配置</span>
+            </div>
+        </div>
+
+        <!-- 模块 2: 创建与获取 -->
+        <div class="section">
+            <h2>创建 (Create)</h2>
+            <div class="item">
+                <span class="cmd">git init</span>
+                <span class="desc">初始化仓库</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git clone [url]</span>
+                <span class="desc">克隆远程仓库</span>
+            </div>
+        </div>
+
+        <!-- 模块 3: 基础快照 -->
+        <div class="section">
+            <h2>基础操作 (Basic)</h2>
+            <div class="item">
+                <span class="cmd">git status</span>
+                <span class="desc">查看状态</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git add .</span>
+                <span class="desc">添加所有文件</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git add [file]</span>
+                <span class="desc">添加指定文件</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git commit -m "msg"</span>
+                <span class="desc">提交更改</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git commit --amend</span>
+                <span class="desc">修改最后一次提交</span>
+            </div>
+        </div>
+
+        <!-- 模块 4: 分支 -->
+        <div class="section">
+            <h2>分支 (Branches)</h2>
+            <div class="item">
+                <span class="cmd">git branch</span>
+                <span class="desc">列出本地分支</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git branch -a</span>
+                <span class="desc">列出所有分支</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git branch [name]</span>
+                <span class="desc">新建分支</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git checkout [name]</span>
+                <span class="desc">切换分支</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git switch [name]</span>
+                <span class="desc">切换分支(新)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git checkout -b [name]</span>
+                <span class="desc">创建并切换</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git merge [branch]</span>
+                <span class="desc">合并分支</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git branch -d [name]</span>
+                <span class="desc">删除分支</span>
+            </div>
+        </div>
+
+        <!-- 模块 5: 远程同步 -->
+        <div class="section">
+            <h2>远程 (Remote)</h2>
+            <div class="item">
+                <span class="cmd">git remote -v</span>
+                <span class="desc">查看远程地址</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git fetch [remote]</span>
+                <span class="desc">拉取不合并</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git pull [remote]</span>
+                <span class="desc">拉取并合并</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git push [remote]</span>
+                <span class="desc">推送到远程</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git push -u origin master</span>
+                <span class="desc">推送并关联</span>
+            </div>
+        </div>
+
+        <!-- 模块 6: 撤销 -->
+        <div class="section">
+            <h2>撤销 (Undo)</h2>
+            <div class="item">
+                <span class="cmd">git checkout -- [file]</span>
+                <span class="desc">丢弃工作区修改</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git restore [file]</span>
+                <span class="desc">丢弃修改(新)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git reset [file]</span>
+                <span class="desc">暂存区回退</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git reset --hard HEAD</span>
+                <span class="desc">重置所有修改</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git revert [commit]</span>
+                <span class="desc">反转提交</span>
+            </div>
+        </div>
+
+        <!-- 模块 7: 暂存 -->
+        <div class="section">
+            <h2>暂存 (Stash)</h2>
+            <div class="item">
+                <span class="cmd">git stash</span>
+                <span class="desc">暂存修改</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git stash list</span>
+                <span class="desc">查看暂存列表</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git stash pop</span>
+                <span class="desc">恢复并删除</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git stash drop</span>
+                <span class="desc">删除暂存</span>
+            </div>
+        </div>
+
+        <!-- 模块 8: 比较与日志 -->
+        <div class="section">
+            <h2>日志 (Log & Diff)</h2>
+            <div class="item">
+                <span class="cmd">git log</span>
+                <span class="desc">查看提交历史</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git log --oneline</span>
+                <span class="desc">简洁日志</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git log --graph</span>
+                <span class="desc">图形化日志</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git diff</span>
+                <span class="desc">工作区vs暂存区</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git diff --staged</span>
+                <span class="desc">暂存区vs版本库</span>
+            </div>
+        </div>
+
+        <!-- 模块 9: 标签 -->
+        <div class="section">
+            <h2>标签 (Tag)</h2>
+            <div class="item">
+                <span class="cmd">git tag</span>
+                <span class="desc">列出标签</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git tag [name]</span>
+                <span class="desc">新建标签</span>
+            </div>
+            <div class="item">
+                <span class="cmd">git push origin [tag]</span>
+                <span class="desc">推送标签</span>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>
