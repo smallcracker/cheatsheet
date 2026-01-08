@@ -208,8 +208,7 @@
 <body>
 
     <header>
-        <h1>PDB Cheatsheet</h1>
-        <p class="subtitle">一图流速查表 | Generated from pdb.md</p>
+        <h1>Python & PDB Cheatsheet</h1>
     </header>
 
     <main>
@@ -365,6 +364,22 @@
                 <span class="desc">美观打印表达式</span>
             </div>
             <div class="item block">
+                <span class="cmd">p locals()</span>
+                <span class="desc">查看当前帧的局部变量字典</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">p globals()</span>
+                <span class="desc">查看当前帧的全局变量字典</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">p vars(obj)</span>
+                <span class="desc">查看对象的所有实例变量（返回__dict__）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">p dir(obj)</span>
+                <span class="desc">列出对象的所有属性和方法（含继承）</span>
+            </div>
+            <div class="item block">
                 <span class="cmd">whatis expression</span>
                 <span class="desc">显示表达式类型</span>
             </div>
@@ -427,18 +442,6 @@
                 <span class="desc">查看函数文档</span>
             </div>
             <div class="item block">
-                <span class="cmd">p $__frame.f_locals</span>
-                <span class="desc">查看局部变量</span>
-            </div>
-            <div class="item block">
-                <span class="cmd">p $__frame.f_globals</span>
-                <span class="desc">查看全局变量</span>
-            </div>
-            <div class="item block">
-                <span class="cmd">p $__frame.f_lineno</span>
-                <span class="desc">输出当前行号</span>
-            </div>
-            <div class="item block">
                 <span class="cmd">p $__exception__</span>
                 <span class="desc">查看异常</span>
             </div>
@@ -452,14 +455,6 @@
         <div class="section">
             <h2>实用技巧</h2>
             <div class="item block">
-                <span class="cmd">p locals()</span>
-                <span class="desc">快速查看当前帧的局部变量字典</span>
-            </div>
-            <div class="item block">
-                <span class="cmd">p globals()</span>
-                <span class="desc">快速查看当前帧的全局变量字典</span>
-            </div>
-            <div class="item block">
                 <span class="cmd">interact</span>
                 <span class="desc">进入交互式解释器（带当前帧上下文），适合临时多步探索</span>
             </div>
@@ -467,9 +462,139 @@
                 <!-- <span class="cmd"></span> -->
                 <span class="desc">小习惯：先用 where/w 看堆栈，再用 u/d 切到目标帧，然后用 args/locals()/p 观察变量</span>
             </div>
+            <div class="item block">
+                <span class="cmd">print(f"{x=}")</span>
+                <span class="desc">一行打印变量名和值（Python 3.8+）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">print(f"{x+y=}")</span>
+                <span class="desc">支持表达式的自动打印</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">from pprint import pprint; pprint(data)</span>
+                <span class="desc">美化打印复杂数据结构（自动换行缩进）</span>
+            </div>
         </div>
 
-    </main>
+        <!-- 模块 9: pip包管理 -->
+        <div class="section">
+            <h2>pip 包管理</h2>
+            <div class="item block">
+                <span class="cmd">pip install package_name</span>
+                <span class="desc">安装最新版本的包</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pip install -r requirements.txt</span>
+                <span class="desc">批量安装依赖包</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pip install --upgrade package_name</span>
+                <span class="desc">升级包到最新版本 (简写 -U)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pip uninstall package_name</span>
+                <span class="desc">卸载包 (-y 跳过确认)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pip freeze > requirements.txt</span>
+                <span class="desc">导出当前环境所有包版本</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pip show package_name</span>
+                <span class="desc">查看包的详细信息，包括安装位置、版本、依赖等</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pip list</span>
+                <span class="desc">列出所有当前环境中的包及其版本</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple</span>
+                <span class="desc">设置全局镜像源 (加速下载)</span>
+            </div>
+        </div>
+
+        <!-- 模块 10: Conda环境管理 -->
+        <div class="section">
+            <h2>Conda 环境管理</h2>
+            <div class="item block">
+                <span class="cmd">conda create -n env_name python=3.10</span>
+                <span class="desc">创建指定Python版本的虚拟环境</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">conda activate env_name</span>
+                <span class="desc">激活虚拟环境</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">conda env list</span>
+                <span class="desc">列出所有虚拟环境</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">conda install package_name</span>
+                <span class="desc">在当前环境安装包 (-c conda-forge 指定源)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">conda remove -n env_name --all</span>
+                <span class="desc">删除整个虚拟环境</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">conda list</span>
+                <span class="desc">列出所有环境中的包及其版本</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">conda env export > environment.yml</span>
+                <span class="desc">导出跨平台环境配置文件</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">conda env create -f environment.yml</span>
+                <span class="desc">根据配置文件重建环境</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">conda clean -a</span>
+                <span class="desc">清理未使用的包和缓存 (释放空间)</span>
+            </div>
+        </div>
+
+        <!-- 模块 11: uv 极速管理 -->
+        <div class="section">
+            <h2>uv 极速管理</h2>
+            <div class="item block">
+                <span class="cmd">uv init project_name --python 3.11</span>
+                <span class="desc">初始化新项目并指定 Python 版本 (类似 npm init)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">uv add package_name</span>
+                <span class="desc">添加依赖并更新锁文件 (自动管理 venv)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">uv run script.py</span>
+                <span class="desc">运行脚本或命令 (自动处理依赖环境)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">uv sync</span>
+                <span class="desc">同步项目依赖到环境 (确保一致性)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">uv tool install ruff</span>
+                <span class="desc">安装全局命令行工具 (类似 pipx)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">uvx pycowsay "hello"</span>
+                <span class="desc">临时运行工具 (无需安装，别名 uv tool run)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">uv python install 3.12</span>
+                <span class="desc">安装 Python 解释器版本</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">uv python pin 3.11</span>
+                <span class="desc">调整（锁定）当前项目使用的 Python 版本</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">uv pip install -r requirements.txt</span>
+                <span class="desc">兼容 pip 的安装命令 (极速模式)</span>
+            </div>
+        </div>
+
 </body>
 
 </html>
