@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Cheatsheet - 一图流风格</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: transparent;
+            --text-primary: #333333;
+            --text-secondary: #444444;
+            --accent-color: #00008b;
+            /* Deep Blue */
+            --code-bg: #acbecd;
+            /* Light Blue */
+            --code-text: #000000;
+            --border-radius: 0;
+            --spacing: 10px;
+            --font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --code-font: "Consolas", "Monaco", "Courier New", monospace;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1e1e1e;
+                --card-bg: transparent;
+                --text-primary: #e0e0e0;
+                --text-secondary: #cccccc;
+                --accent-color: #82aaff;
+                --code-bg: #2d3b4d;
+                --code-text: #d6deeb;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-size: 13px;
+            line-height: 1.3;
+            padding: 15px;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-height: 800px) {
+            body {
+                height: auto;
+                overflow: auto;
+            }
+        }
+
+        header {
+            text-align: left;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: var(--accent-color);
+            margin-bottom: 0;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        main {
+            column-count: 6;
+            column-gap: 20px;
+            column-rule: 1px solid #e0e0e0;
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+
+        @media (max-width: 1600px) {
+            main {
+                column-count: 5;
+            }
+        }
+
+        @media (max-width: 1400px) {
+            main {
+                column-count: 4;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            main {
+                column-count: 3;
+            }
+        }
+
+        @media (max-width: 800px) {
+            main {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 600px) {
+            main {
+                column-count: 1;
+            }
+        }
+
+        .section {
+            background: var(--card-bg);
+            padding: 0;
+            margin-bottom: 20px;
+            break-inside: auto;
+            /* Allow splitting across columns */
+            border: none;
+            box-shadow: none;
+        }
+
+        .section h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--accent-color);
+            border-bottom: none;
+            padding-bottom: 0;
+            font-weight: bold;
+            display: block;
+            break-after: avoid;
+            /* Keep title with first item */
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column-reverse;
+            /* Description on top, Code on bottom */
+            margin-bottom: 8px;
+            font-size: 13px;
+            break-inside: avoid;
+            /* Don't split individual items */
+        }
+
+        .item:last-child {
+            margin-bottom: 0;
+        }
+
+        .cmd {
+            font-family: var(--code-font);
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 4px 8px;
+            border-radius: 0;
+            font-weight: normal;
+            white-space: pre-wrap;
+            /* Allow wrapping for long commands */
+            word-break: break-all;
+            display: block;
+            width: 100%;
+            margin-top: 2px;
+        }
+
+        .cmd::before {
+            content: "";
+            color: #888;
+            user-select: none;
+        }
+
+        .desc {
+            color: var(--text-primary);
+            text-align: left;
+            font-size: 13px;
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+
+        /* Specific styling for command details */
+        .desc ul {
+            padding-left: 15px;
+            margin-top: 2px;
+            list-style-type: none;
+        }
+
+        .desc li {
+            position: relative;
+        }
+
+        .desc li::before {
+            content: "-";
+            position: absolute;
+            left: -10px;
+        }
+
+        /* Remove special block handling since everything is block now */
+        .item.block {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .item.block .desc {
+            text-align: left;
+            margin: 0 0 2px 0;
+        }
+
+        @media print {
+            body {
+                background: white;
+                height: auto;
+                overflow: visible;
+                padding: 0;
+            }
+
+            main {
+                column-count: 4;
+            }
+
+            .cmd {
+                background-color: #c9dbeaff !important;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Linux Cheatsheet</h1>
+        <!-- <p class="subtitle">一图流速查表 | Generated from 一图流linux.md</p> -->
+    </header>
+
+    <main>
+        <!-- 模块 1: 文件管理 -->
+        <div class="section">
+            <h2>File Management (文件管理)</h2>
+            <div class="item block">
+                <span class="cmd">ls -lha</span>
+                <span class="desc">列出所有文件(含隐藏)、显示大小/时间</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">tree -h -L -a 2</span>
+                <span class="desc">树形显示目录 (显示大小 限制深度 显示隐藏文件)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">cp -r source/ dest/</span>
+                <span class="desc">递归复制目录 (-i 交互, -b 备份)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">mv -f source dest</span>
+                <span class="desc">强制移动/重命名 (-b 备份)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">rm -rf dir/</span>
+                <span class="desc">强制递归删除目录</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">ln -s src softlink</span>
+                <span class="desc">创建软链接 (快捷方式)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">ln src hardlink</span>
+                <span class="desc">创建硬链接</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">chmod +x script.sh</span>
+                <span class="desc">添加执行权限</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">chmod -R 755 dir/</span>
+                <span class="desc">递归修改权限 (所有者全权, 其他只读)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">find . -name "*.py"</span>
+                <span class="desc">查找当前目录下的 .py 文件</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">find . -type f -size +100M</span>
+                <span class="desc">查找大于 100M 的文件</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">find . -iname "*log*"</span>
+                <span class="desc">找文件名含 log 的文件(不区分大小写)</span>
+            </div>
+        </div>
+
+        <!-- 模块 2: 文本处理 -->
+        <div class="section">
+            <h2>Text Processing (文本处理)</h2>
+            <div class="item block">
+                <span class="cmd">cat -n file</span>
+                <span class="desc">查看文件并显示行号</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">tail -f access.log</span>
+                <span class="desc">实时追踪文件更新 (看日志神器)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">head -n 10 file</span>
+                <span class="desc">查看前 10 行</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">cut -d: -f1 文件名</span>
+                <span class="desc">按冒号分隔，提取第1列</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">sort | uniq -c | sort -nr</span>
+                <span class="desc">排序 -> 统计频率 -> 按频率降序</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">grep "ERROR" app.log</span>
+                <span class="desc">查找包含 ERROR 的行</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">tail -f log | grep "ERROR"</span>
+                <span class="desc">实时监控并过滤日志</span>
+            </div>
+        </div>
+
+        <!-- 模块 3: 磁盘与归档 -->
+        <div class="section">
+            <h2>Disk & Archive (磁盘归档)</h2>
+            <div class="item block">
+                <span class="cmd">tar -zxvf file.tar.gz</span>
+                <span class="desc">解压 .tar.gz 到当前目录</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">tar -zcvf bk.tar.gz dir/</span>
+                <span class="desc">将目录压缩为 .tar.gz</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">du -sh .</span>
+                <span class="desc">查看当前文件夹总大小</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">du -sh *</span>
+                <span class="desc">查看当前目录下每个文件/文件夹的大小</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">du -sh * | sort -hr</span>
+                <span class="desc">按大小排序当前目录下每个文件/文件夹的大小</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">df -h</span>
+                <span class="desc">查看磁盘分区挂载与剩余空间 (宏观)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">diff -u old.py new.py</span>
+                <span class="desc">比较文件差异 (Git 风格)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">diff -y a.txt b.txt</span>
+                <span class="desc">左右分栏对比，直观对比修改</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">diff -qr dir1/ dir2/</span>
+                <span class="desc">递归比较目录差异 (仅列出不同文件)</span>
+            </div>
+        </div>
+
+        <!-- 模块 4: 系统监控 -->
+        <div class="section">
+            <h2>Process (系统监控)</h2>
+            <div class="item block">
+                <span class="cmd">top</span>
+                <span class="desc">实时监控 (进入后按键：P=CPU排序 M=内存排序 N=PID排序 c=完整命令 k+PID=杀进程 q=退出)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">top -u root</span>
+                <span class="desc">只看 root 用户的进程</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">htop</span>
+                <span class="desc">top 的增强版，能用鼠标操作</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">kill PID</span>
+                <span class="desc">结束进程</span>
+            </div>
+        </div>
+
+        <!-- 模块 5: 远程与传输 -->
+        <div class="section">
+            <h2>Remote (远程与传输)</h2>
+            <div class="item block">
+                <span class="cmd">ssh -p 22 user@host</span>
+                <span class="desc">远程登录 (-X 转发图形界面)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">scp -v file user@host:/path</span>
+                <span class="desc">上传文件 (私有传输)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">scp -v user@host:/path/file .</span>
+                <span class="desc">下载文件 (私有传输)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">rsync -avzP dir/ user@host:/path</span>
+                <span class="desc">增量同步目录 (推荐，支持断点续传)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">wget -c URL</span>
+                <span class="desc">断点续传下载文件 (公开链接)</span>
+            </div>
+        </div>
+
+        <!-- 模块 6: 网络排查 -->
+        <div class="section">
+            <h2>Network Diag (网络排查)</h2>
+            <div class="item block">
+                <span class="cmd">ip -br a</span>
+                <span class="desc">查看 IP 地址 (替代 ifconfig)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">ip r</span>
+                <span class="desc">查看路由表</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">dig google.com</span>
+                <span class="desc">DNS 解析查询 (+trace 看完整路径)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">ping -c 4 google.com</span>
+                <span class="desc">连通性测试 (发4个包)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">mtr google.com</span>
+                <span class="desc">动态显示路径丢包率 (Ping+Traceroute)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">ss -tunlp</span>
+                <span class="desc">查看监听端口及进程 (替代 netstat)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">nc -zv 1.2.3.4 80</span>
+                <span class="desc">扫描/探测端口开放情况</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">curl -v cip.cc</span>
+                <span class="desc">查看出口 IP 详情 (可以用于测试代理)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">curl -i -H "Host: a.com" IP</span>
+                <span class="desc">指定 Host 头测试虚拟主机（-i 显示响应头）（-v 显示详细信息）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">tcpdump -i eth0 dst 1.2.3.4</span>
+                <span class="desc">抓取目标 IP 的包 (-w 保存 .pcap)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">ufw status</span>
+                <span class="desc">查看防火墙状态</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">sudo ufw default deny incoming</span>
+                <span class="desc">拒绝所有入站连接</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">sudo ufw default allow outgoing</span>
+                <span class="desc">允许所有出站连接</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">sudo ufw allow ssh</span>
+                <span class="desc">允许 SSH 端口 (或 sudo ufw allow 22)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">sudo ufw allow 80/tcp</span>
+                <span class="desc">允许 HTTP</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">sudo ufw allow 443/tcp</span>
+                <span class="desc">允许 HTTPS</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">sudo ufw allow from 192.168.1.100 to any port 3306</span>
+                <span class="desc">仅允许指定 IP 访问本机 3306 端口</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">sudo ufw enable</span>
+                <span class="desc">启用防火墙（先确保已允许 SSH）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">sudo ufw status numbered</span>
+                <span class="desc">查看带编号的规则列表</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">sudo ufw delete 2</span>
+                <span class="desc">删除编号为 2 的规则（根据上一步编号）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">nmtui</span>
+                <span class="desc">图形化界面配置网络 (Wifi/IP)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">netplan apply</span>
+                <span class="desc">应用 YAML 网络配置，Yaml 文件通常保存在 /etc/netplan 文件夹当中</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">nmcli dev wifi connect "SSID" password "PASS"</span>
+                <span class="desc">命令行连接 Wifi（替换 SSID 和 PASS）</span>
+            </div>
+        </div>
+
+        <!-- 模块 7: 代理与环境 -->
+        <div class="section">
+            <h2>Proxy & Env (代理环境)</h2>
+            <div class="item block">
+                <span class="cmd">export http_proxy=http://127.0.0.1:7890</span>
+                <span class="desc">设置终端临时代理 (http/https/all)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">unset http_proxy all_proxy</span>
+                <span class="desc">取消终端代理</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">git config --global http.proxy ...</span>
+                <span class="desc">设置 Git 代理</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pip install ... --proxy ...</span>
+                <span class="desc">Pip 安装使用代理</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">conda config --set proxy_servers.http http://127.0.0.1:7890</span>
+                <span class="desc">设置 Conda 代理 (同时设置 https 同理)</span>
+            </div>
+        </div>
+
+        <!-- 模块 8: 系统与硬件 -->
+        <div class="section">
+            <h2>Hardware (系统与硬件)</h2>
+            <div class="item block">
+                <span class="cmd">cat /etc/os-release</span>
+                <span class="desc">查看 OS 发行版版本</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">uname -r</span>
+                <span class="desc">查看内核版本</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">lscpu</span>
+                <span class="desc">查看 CPU 架构/核数</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">free -h</span>
+                <span class="desc">查看内存使用情况</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">nvidia-smi</span>
+                <span class="desc">查看 GPU 显存/进程</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">nvitop</span>
+                <span class="desc">更强大的 GPU 实时监控工具</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">nvcc -V</span>
+                <span class="desc">查看 CUDA 编译器版本</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">lsblk</span>
+                <span class="desc">查看硬盘/分区树状结构</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">lsusb</span>
+                <span class="desc">查看 USB 设备列表</span>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>
