@@ -271,7 +271,7 @@
             </div>
             <div class="item block">
                 <span class="cmd">run [args] / restart [args]</span>
-                <span class="desc">保留断点重启程序<br>重启时不会重新编译、加载模块 不会检测代码变更</span>
+                <span class="desc">保留断点重启程序<br>重启时不会重新编译、加载模块<br>不会检测代码变更</span>
             </div>
         </div>
 
@@ -303,10 +303,6 @@
                 <span class="desc">在 myfile.py 第 10 行设置条件断点（x > 5）</span>
             </div>
             <div class="item block">
-                <span class="cmd">tbreak [([filename:]lineno | function) [, condition]]</span>
-                <span class="desc">临时断点，命中一次后删除</span>
-            </div>
-            <div class="item block">
                 <span class="cmd">cl(ear) [filename:lineno | bpnumber ...]</span>
                 <span class="desc">清除断点<br>无参数则会清除调试会话中设置的所有断点<br>不会修改或删除源代码中的 breakpoint() </span>
             </div>
@@ -317,14 +313,6 @@
             <div class="item block">
                 <span class="cmd">enable bpnumber ...</span>
                 <span class="desc">启用断点</span>
-            </div>
-            <div class="item block">
-                <span class="cmd">ignore bpnumber [count]</span>
-                <span class="desc">设置断点忽略次数</span>
-            </div>
-            <div class="item block">
-                <span class="cmd">condition bpnumber [condition]</span>
-                <span class="desc">为断点添加/删除条件</span>
             </div>
         </div>
 
@@ -512,7 +500,26 @@
                 <span class="desc">设置全局镜像源 (加速下载)</span>
             </div>
         </div>
-
+        <!-- 模块: venv 环境管理 -->
+        <div class="section">
+            <h2>venv 环境管理</h2>
+            <div class="item block">
+                <span class="cmd">python -m venv <u>venv（约定俗称的虚拟环境名）</u></span>
+                <span class="desc">创建名为 venv 的虚拟环境 (标准库)<br>第一个venv是内置模块的名字 第二个venv是环境名</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">source venv/bin/activate</span>
+                <span class="desc">激活环境 (Linux/macOS)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">deactivate</span>
+                <span class="desc">退出当前虚拟环境</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">rm -rf venv</span>
+                <span class="desc">删除环境 (直接删除文件夹即可)</span>
+            </div>
+        </div>
         <!-- 模块 10: Conda环境管理 -->
         <div class="section">
             <h2>Conda 环境管理</h2>
@@ -571,7 +578,7 @@
             </div>
             <div class="item block">
                 <span class="cmd">uv sync</span>
-                <span class="desc">同步项目依赖到环境 (确保一致性)</span>
+                <span class="desc">同步项目依赖到环境（自动创建/更新虚拟环境）</span>
             </div>
             <div class="item block">
                 <span class="cmd">uv tool install ruff</span>
