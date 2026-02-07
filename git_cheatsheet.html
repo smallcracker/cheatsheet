@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Cheatsheet - 一图流风格</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: transparent;
+            --text-primary: #333333;
+            --text-secondary: #444444;
+            --accent-color: #F05032;
+            /* Git Orange */
+            --code-bg: #f0f0f0;
+            --code-text: #000000;
+            --border-radius: 2px;
+            --spacing: 4px;
+            --font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --code-font: "Consolas", "Monaco", "Courier New", monospace;
+            --warning-bg: #fff3cd;
+            --warning-text: #856404;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1e1e1e;
+                --card-bg: #2d2d2d;
+                --text-primary: #e0e0e0;
+                --text-secondary: #cccccc;
+                --accent-color: #ff7b63;
+                --code-bg: #2d3b4d;
+                --code-text: #d6deeb;
+                --warning-bg: #3e3118;
+                --warning-text: #ffdd9e;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-size: 11px;
+            /* 字体改小 */
+            line-height: 1.2;
+            padding: 8px;
+            /* 页边距改小 */
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-height: 800px) {
+            body {
+                height: auto;
+                overflow: auto;
+            }
+        }
+
+        header {
+            text-align: left;
+            margin-bottom: 5px;
+            /* 头部间距改小 */
+            flex-shrink: 0;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 20px;
+            /* 标题改小 */
+            color: var(--accent-color);
+            margin-bottom: 0;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+            margin-right: 15px;
+        }
+
+        .alert-box {
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+            padding: 4px 8px;
+            /* 警告框内边距改小 */
+            border-radius: var(--border-radius);
+            margin-bottom: 0;
+            border-left: 3px solid var(--accent-color);
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+        }
+
+        .alert-box strong {
+            margin-right: 8px;
+        }
+
+        .alert-box code {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: var(--code-font);
+        }
+
+        main {
+            column-count: 7;
+            /* 增加列数 */
+            column-gap: 15px;
+            column-rule: 1px solid #e0e0e0;
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 10px;
+        }
+
+        @media (max-width: 2000px) {
+            main {
+                column-count: 6;
+            }
+        }
+
+        @media (max-width: 1600px) {
+            main {
+                column-count: 5;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            main {
+                column-count: 4;
+            }
+        }
+
+        @media (max-width: 900px) {
+            main {
+                column-count: 3;
+            }
+        }
+
+        @media (max-width: 600px) {
+            main {
+                column-count: 2;
+            }
+        }
+
+        .section {
+            background: var(--card-bg);
+            padding: 0;
+            margin-bottom: 12px;
+            /* 章节间距改小 */
+            break-inside: auto;
+            border: none;
+        }
+
+        .section h2 {
+            font-size: 14px;
+            /* 章节标题改小 */
+            margin-bottom: 4px;
+            color: var(--accent-color);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 2px;
+            font-weight: bold;
+            break-after: avoid;
+            /* 避免标题和内容分离 */
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 6px;
+            /* 条目间距改小 */
+            font-size: 11px;
+            /* 条目字体改小 */
+            break-inside: avoid;
+            /* 避免条目内部断裂 */
+        }
+
+        .item:last-child {
+            margin-bottom: 0;
+        }
+
+        .cmd {
+            font-family: var(--code-font);
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 2px 4px;
+            /* 代码块内边距改小 */
+            border-radius: var(--border-radius);
+            font-weight: normal;
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: block;
+            width: 100%;
+            margin-top: 1px;
+            border-left: 2px solid #ddd;
+            line-height: 1.1;
+        }
+
+        .desc {
+            color: var(--text-primary);
+            text-align: left;
+            font-size: 11px;
+            line-height: 1.2;
+            font-weight: 600;
+        }
+
+        .sub-desc {
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-top: 1px;
+            line-height: 1.1;
+        }
+
+        ul {
+            padding-left: 15px;
+            margin-top: 2px;
+        }
+
+        li {
+            margin-bottom: 1px;
+        }
+
+        strong {
+            color: var(--accent-color);
+        }
+
+        @media print {
+            body {
+                background: white;
+                height: auto;
+                overflow: visible;
+                padding: 0;
+            }
+
+            main {
+                column-count: 5;
+            }
+
+            .cmd {
+                background-color: #f5f5f5 !important;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Git Cheatsheet</h1>
+        <div style="margin-top: 10px;">
+            <div class="alert-box">
+                <strong>⚠️ 开始工作前，请务必先建分支！</strong><br>
+                <code>$ git switch -c &lt;新分支名&gt;</code>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 设置 -->
+        <div class="section">
+            <h2>设置</h2>
+            <div class="item">
+                <span class="desc">设置附加到提交和标签的姓名和邮箱</span>
+                <span class="cmd">$ git config --global user.name "你的姓名"<br>$ git config --global user.email "name@email.com"</span>
+            </div>
+            <div class="item">
+                <span class="desc">配置 Git 代理 (HTTP/HTTPS)</span>
+                <span class="cmd">$ git config --global http.proxy http://127.0.0.1:7890<br>$ git config --global https.proxy http://127.0.0.1:7890</span>
+            </div>
+        </div>
+
+        <!-- 开始项目 -->
+        <div class="section">
+            <h2>开始项目</h2>
+            <div class="item">
+                <span class="desc">创建本地仓库 (省略目录初始化当前目录)</span>
+                <span class="cmd">$ git init &lt;目录&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">下载远程仓库</span>
+                <span class="cmd">$ git clone &lt;仓库地址&gt;</span>
+            </div>
+        </div>
+
+        <!-- 忽略文件 -->
+        <div class="section">
+            <h2>忽略文件 (.gitignore)</h2>
+            <div class="item">
+                <span class="desc">常见忽略规则示例</span>
+                <span class="cmd">*.log #忽略所有.log<br>node_modules/ # 忽略目录<br>.env # 忽略环境配置<br>!main.log #例外：追踪main.log</span>
+            </div>
+        </div>
+
+        <!-- 进行修改 -->
+        <div class="section">
+            <h2>进行修改</h2>
+            <div class="item">
+                <span class="desc">添加文件到暂存区</span>
+                <span class="cmd">$ git add &lt;文件&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">暂存所有文件</span>
+                <span class="cmd">$ git add .</span>
+            </div>
+            <div class="item">
+                <span class="desc">提交所有暂存的文件</span>
+                <span class="cmd">$ git commit -m "提交信息"</span>
+            </div>
+            <div class="item">
+                <span class="desc">修改最后一次提交 (修正信息或补漏)</span>
+                <span class="cmd">$ git commit --amend -m "新的提交信息"</span>
+            </div>
+        </div>
+
+        <!-- 分支 -->
+        <div class="section">
+            <h2>分支</h2>
+            <div class="item">
+                <span class="desc">列出分支 (-r 远程, -a 所有)</span>
+                <span class="cmd">$ git branch</span>
+            </div>
+            <div class="item">
+                <span class="desc">查看分支及跟踪的远程分支</span>
+                <span class="cmd">$ git branch -vv</span>
+            </div>
+            <div class="item">
+                <span class="desc">创建新分支</span>
+                <span class="cmd">$ git branch &lt;新分支名&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">切换分支</span>
+                <span class="cmd">$ git checkout &lt;分支名&gt;<br>$ git switch &lt;分支名&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">创建并切换分支</span>
+                <span class="cmd">$ git checkout -b &lt;新&gt;<br>$ git switch -c &lt;新&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">删除分支 (-d 已合并, -D 强制)</span>
+                <span class="cmd">$ git branch -d &lt;分支名&gt;<br>$ git branch -D &lt;分支名&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">打标签</span>
+                <span class="cmd">$ git tag &lt;名&gt;<br>$ git tag -a &lt;名&gt; -m "msg"</span>
+            </div>
+            <div class="item">
+                <span class="desc">查看标签</span>
+                <span class="cmd">$ git tag<br>$ git show &lt;标签名&gt;</span>
+            </div>
+        </div>
+
+        <!-- 合并 -->
+        <div class="section">
+            <h2>合并</h2>
+            <div class="item">
+                <span class="desc">合并分支 a 到 b (--no-ff 非快进)</span>
+                <span class="cmd">$ git checkout b<br>$ git merge a</span>
+            </div>
+            <div class="item">
+                <span class="desc">放弃合并 (冲突后)</span>
+                <span class="cmd">$ git merge --abort</span>
+            </div>
+            <div class="item">
+                <span class="desc">压缩合并 (所有提交压缩为一个)</span>
+                <span class="cmd">$ git merge --squash a</span>
+            </div>
+            <div class="item">
+                <span class="desc">摘樱桃 (应用特定提交)</span>
+                <span class="cmd">$ git cherry-pick &lt;commit&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">摘樱桃冲突处理</span>
+                <span class="cmd">$ git cherry-pick --continue<br>$ git cherry-pick --abort</span>
+            </div>
+        </div>
+
+        <!-- 变基 -->
+        <div class="section">
+            <h2>变基 (Rebase)</h2>
+            <div class="item">
+                <span class="desc">将特性分支变基到主分支</span>
+                <div class="sub-desc">保持历史整洁，防止不必要的合并提交</div>
+                <span class="cmd">$ git checkout feature<br>$ git rebase main</span>
+            </div>
+            <div class="item">
+                <span class="desc">变基冲突处理</span>
+                <span class="cmd">$ git rebase --continue<br>$ git rebase --abort</span>
+            </div>
+            <div class="item">
+                <span class="desc">交互式变基 (清理提交)</span>
+                <span class="cmd">$ git rebase -i main</span>
+            </div>
+            <div class="item">
+                <span class="desc">交互式最后3个提交</span>
+                <span class="cmd">$ git rebase -i HEAD~3</span>
+            </div>
+            <div class="item">
+                <span class="desc">Todo 列表常用命令</span>
+                <ul class="sub-desc" style="list-style: none; padding-left: 5px;">
+                    <li><code>pick</code>: 保留</li>
+                    <li><code>reword</code>: 改提交信息</li>
+                    <li><code>edit</code>: 暂停修改内容</li>
+                    <li><code>squash</code>: 合并到上一条</li>
+                    <li><code>fixup</code>: 合并但丢弃信息</li>
+                    <li><code>drop</code>: 丢弃</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 撤销 -->
+        <div class="section">
+            <h2>撤销操作</h2>
+            <div class="item">
+                <span class="desc">移动/重命名并暂存</span>
+                <span class="cmd">$ git mv &lt;原&gt; &lt;新&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">删除文件并暂存</span>
+                <span class="cmd">$ git rm &lt;文件&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">仅从暂存区删除 (保留文件)</span>
+                <span class="cmd">$ git rm --cached &lt;文件&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">查看/临时检出提交 (Detached HEAD)</span>
+                <span class="cmd">$ git checkout &lt;commit-ish&gt;<br>$ git switch --detach &lt;...&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">创建撤销提交 (反向操作)</span>
+                <span class="cmd">$ git revert &lt;commit-ish&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">丢弃工作区修改</span>
+                <span class="cmd">$ git checkout -- &lt;文件&gt;<br>$ git restore &lt;文件&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">取消暂存 (保留工作区)</span>
+                <span class="cmd">$ git restore --staged &lt;文件&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">Reset 重置分支指针</span>
+                <span class="cmd">$ git reset --soft &lt;commit&gt;<br><span style="color:#666"># 移动HEAD，保留暂存/工作区</span><br>$ git reset &lt;commit&gt;<br><span style="color:#666"># 重置暂存区，保留工作区</span><br>$ git reset --hard &lt;commit&gt;<br><span style="color:#666"># ⚠️ 重置暂存和工作区</span></span>
+            </div>
+            <div class="item">
+                <span class="desc">清除未跟踪文件 (-n 预览)</span>
+                <span class="cmd">$ git clean -nfd<br>$ git clean -fd</span>
+            </div>
+        </div>
+
+        <!-- 查看仓库 -->
+        <div class="section">
+            <h2>查看仓库</h2>
+            <div class="item">
+                <span class="desc">查看状态 (s: 紧凑)</span>
+                <span class="cmd">$ git status<br>$ git status -sb</span>
+            </div>
+            <div class="item">
+                <span class="desc">查看历史</span>
+                <span class="cmd">$ git log --oneline<br>$ git log --graph --oneline --decorate --all</span>
+            </div>
+            <div class="item">
+                <span class="desc">查看对象详细内容</span>
+                <span class="cmd">$ git show &lt;commit-ish&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">查看差异</span>
+                <span class="cmd">$ git diff # 工作区 vs 暂存<br>$ git diff --cached # 暂存 vs HEAD<br>$ git diff c1 c2 # 提交间差异</span>
+            </div>
+            <div class="item">
+                <span class="desc">引用日志 (找回丢失提交)</span>
+                <span class="cmd">$ git reflog</span>
+            </div>
+            <div class="item">
+                <span class="desc">查看每行修改人 (Blame)</span>
+                <span class="cmd">$ git blame &lt;文件&gt;</span>
+            </div>
+        </div>
+
+        <!-- 储藏 -->
+        <div class="section">
+            <h2>储藏 (Stash)</h2>
+            <div class="item">
+                <span class="desc">暂存更改 (-u 含未跟踪)</span>
+                <span class="cmd">$ git stash<br>$ git stash push -m "msg"</span>
+            </div>
+            <div class="item">
+                <span class="desc">列出所有储藏</span>
+                <span class="cmd">$ git stash list</span>
+            </div>
+            <div class="item">
+                <span class="desc">应用最近储藏 (保持堆栈)</span>
+                <span class="cmd">$ git stash apply</span>
+            </div>
+            <div class="item">
+                <span class="desc">弹出储藏 (从堆栈删除)</span>
+                <span class="cmd">$ git stash pop stash@{2}</span>
+            </div>
+            <div class="item">
+                <span class="desc">应用并恢复暂存区状态</span>
+                <span class="cmd">$ git stash pop --index</span>
+            </div>
+            <div class="item">
+                <span class="desc">删除储藏</span>
+                <span class="cmd">$ git stash drop stash@{0}<br>$ git stash clear</span>
+            </div>
+        </div>
+
+        <!-- 同步 -->
+        <div class="section">
+            <h2>同步</h2>
+            <div class="item">
+                <span class="desc">管理远程仓库</span>
+                <span class="cmd">$ git remote add &lt;别名&gt; &lt;url&gt;<br>$ git remote -v</span>
+            </div>
+            <div class="item">
+                <span class="desc">获取分支 (不合并)</span>
+                <span class="cmd">$ git fetch &lt;别名&gt;<br>$ git fetch --prune &lt;别名&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">获取并合并</span>
+                <span class="cmd">$ git pull<br>$ git pull --rebase &lt;别名&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">推送</span>
+                <span class="cmd">$ git push &lt;别名&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">推送到指定分支</span>
+                <span class="cmd">$ git push &lt;别名&gt; &lt;分支&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">推送本地到不同名远程分支</span>
+                <span class="cmd">$ git push &lt;别名&gt; &lt;本&gt;:&lt;远&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">首次推送并设置追踪</span>
+                <span class="cmd">$ git push -u &lt;别名&gt; &lt;分支&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">推送标签</span>
+                <span class="cmd">$ git push &lt;别名&gt; --tags</span>
+            </div>
+        </div>
+
+        <!-- 基本概念 -->
+        <div class="section">
+            <h2>基本概念</h2>
+            <div class="item">
+                <span class="cmd">main / master</span>
+                <span class="desc">默认开发分支</span>
+            </div>
+            <div class="item">
+                <span class="cmd">origin</span>
+                <span class="desc">默认远程仓库别名</span>
+            </div>
+            <div class="item">
+                <span class="cmd">HEAD</span>
+                <span class="desc">指向当前分支的指针</span>
+            </div>
+            <div class="item">
+                <span class="cmd">HEAD^ / HEAD~4</span>
+                <span class="desc">父提交 / 第4代祖先</span>
+            </div>
+            <div class="item" style="margin-top: 10px;">
+                <strong>什么是 commit-ish?</strong>
+                <span class="sub-desc">任何能被解析为提交的引用：</span>
+                <ul class="sub-desc">
+                    <li>哈希: <code>a1b2c3</code></li>
+                    <li>分支/标签: <code>main</code>, <code>v1.0</code></li>
+                    <li>相对引用: <code>HEAD^</code></li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>

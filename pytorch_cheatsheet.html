@@ -12,11 +12,11 @@
             --text-primary: #333333;
             --text-secondary: #444444;
             /* PyTorch Orange-Red Theme */
-            --accent-color: #ee4c2c; 
+            --accent-color: #ee4c2c;
             --code-bg: #fbeee8;
             --code-text: #000000;
             --border-radius: 0;
-            --spacing: 10px;
+            --spacing: 6px;
             --font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             --code-font: "Consolas", "Monaco", "Courier New", monospace;
         }
@@ -43,9 +43,9 @@
             font-family: var(--font-family);
             background-color: var(--bg-color);
             color: var(--text-primary);
-            font-size: 13px;
-            line-height: 1.3;
-            padding: 15px;
+            font-size: 12px;
+            line-height: 1.25;
+            padding: 10px;
             height: 100vh;
             overflow: hidden;
             display: flex;
@@ -61,14 +61,14 @@
 
         header {
             text-align: left;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             flex-shrink: 0;
             border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 10px;
+            padding-bottom: 6px;
         }
 
         h1 {
-            font-size: 32px;
+            font-size: 26px;
             color: var(--accent-color);
             margin-bottom: 0;
             font-weight: bold;
@@ -77,55 +77,55 @@
 
         p.subtitle {
             color: var(--text-secondary);
-            font-size: 14px;
-            margin-top: 5px;
+            font-size: 12px;
+            margin-top: 4px;
         }
 
         main {
-            column-count: 6;
-            column-gap: 20px;
+            column-count: 7;
+            column-gap: 12px;
             column-rule: 1px solid #e0e0e0;
             flex-grow: 1;
             overflow-y: auto;
-            padding-bottom: 20px;
+            padding-bottom: 10px;
         }
 
         @media (max-width: 1400px) {
             main {
-                column-count: 5;
+                column-count: 6;
             }
         }
 
         @media (max-width: 1200px) {
             main {
-                column-count: 4;
+                column-count: 5;
             }
         }
 
         @media (max-width: 900px) {
             main {
-                column-count: 3;
+                column-count: 4;
             }
         }
-        
+
         @media (max-width: 600px) {
             main {
-                column-count: 2;
+                column-count: 3;
             }
         }
 
         .section {
             background: var(--card-bg);
             padding: 0;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             break-inside: auto;
             border: none;
             box-shadow: none;
         }
 
         .section h2 {
-            font-size: 18px;
-            margin-bottom: 8px;
+            font-size: 16px;
+            margin-bottom: 6px;
             color: var(--accent-color);
             border-bottom: none;
             padding-bottom: 0;
@@ -136,9 +136,10 @@
 
         .item {
             display: flex;
-            flex-direction: column-reverse; /* Description on top */
-            margin-bottom: 8px;
-            font-size: 13px;
+            flex-direction: column-reverse;
+            /* Description on top */
+            margin-bottom: 6px;
+            font-size: 12px;
             break-inside: avoid;
         }
 
@@ -150,30 +151,30 @@
             font-family: var(--code-font);
             background-color: var(--code-bg);
             color: var(--code-text);
-            padding: 4px 6px;
+            padding: 3px 5px;
             border-radius: 0;
             font-weight: normal;
             white-space: pre-wrap;
             word-break: break-all;
             display: block;
             width: 100%;
-            margin-top: 2px;
+            margin-top: 1px;
             border-left: 3px solid rgba(238, 76, 44, 0.3);
         }
 
         .desc {
             color: var(--text-primary);
             text-align: left;
-            font-size: 13px;
-            line-height: 1.2;
-            margin-bottom: 2px;
+            font-size: 12px;
+            line-height: 1.15;
+            margin-bottom: 1px;
             font-weight: 500;
         }
-        
+
         .desc code {
             font-family: var(--code-font);
-            background-color: rgba(0,0,0,0.05);
-            padding: 0 3px;
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 0 2px;
             border-radius: 3px;
         }
 
@@ -184,9 +185,11 @@
                 overflow: visible;
                 padding: 0;
             }
+
             main {
-                column-count: 5;
+                column-count: 6;
             }
+
             .cmd {
                 background-color: #fcece9 !important;
                 -webkit-print-color-adjust: exact;
@@ -213,6 +216,10 @@
                 <span class="desc">从列表数据直接创建张量</span>
             </div>
             <div class="item">
+                <span class="cmd">torch.Tensor([1, 2, 3])</span>
+                <span class="desc">张量构造器 (默认 float32)</span>
+            </div>
+            <div class="item">
                 <span class="cmd">torch.zeros(2, 3)</span>
                 <span class="desc">创建全 0 张量 (2行3列)</span>
             </div>
@@ -221,24 +228,28 @@
                 <span class="desc">创建全 1 张量</span>
             </div>
             <div class="item">
-                <span class="cmd">torch.rand(2, 3)</span>
-                <span class="desc">[0, 1) 均匀分布随机数</span>
+                <span class="cmd">torch.empty(2, 3)</span>
+                <span class="desc">创建未初始化张量 (占位更快)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.zeros_like(t)</span>
+                <span class="desc">按已有张量形状创建全 0</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.ones_like(t)</span>
+                <span class="desc">按已有张量形状创建全 1</span>
             </div>
             <div class="item">
                 <span class="cmd">torch.randn(2, 3)</span>
                 <span class="desc">标准正态分布随机数 (均值0, 方差1)</span>
             </div>
             <div class="item">
+                <span class="cmd">torch.randint(0, 10, (2, 3))</span>
+                <span class="desc">整数随机张量 (区间 [0, 10))</span>
+            </div>
+            <div class="item">
                 <span class="cmd">torch.arange(0, 10, 2)</span>
                 <span class="desc">范围创建 [start, end) 步长2</span>
-            </div>
-            <div class="item">
-                <span class="cmd">torch.linspace(0, 1, 100)</span>
-                <span class="desc">在区间内均匀生成 100 个点</span>
-            </div>
-            <div class="item">
-                <span class="cmd">torch.eye(3)</span>
-                <span class="desc">创建 3x3 单位矩阵</span>
             </div>
             <div class="item">
                 <span class="cmd">torch.full((2, 3), 9)</span>
@@ -258,8 +269,24 @@
                 <span class="desc">获取数据类型 (如 torch.float32)</span>
             </div>
             <div class="item">
+                <span class="cmd">torch.float32 / torch.bfloat16 / torch.long</span>
+                <span class="desc">常用 dtype 常量</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.FloatTensor / torch.LongTensor</span>
+                <span class="desc">旧式类型构造器 (不推荐但常见)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.bool / torch.uint8</span>
+                <span class="desc">布尔与字节类型</span>
+            </div>
+            <div class="item">
                 <span class="cmd">t.device</span>
                 <span class="desc">查看所在设备 (cpu / cuda:0)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.device("cuda:0")</span>
+                <span class="desc">显式创建设备对象</span>
             </div>
             <div class="item">
                 <span class="cmd">t.item()</span>
@@ -272,6 +299,14 @@
             <div class="item">
                 <span class="cmd">torch.from_numpy(arr)</span>
                 <span class="desc">NumPy 转 Tensor (共享内存)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.as_tensor(data)</span>
+                <span class="desc">尽量零拷贝构造张量</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.is_tensor(x)</span>
+                <span class="desc">判断对象是否为 Tensor</span>
             </div>
             <div class="item">
                 <span class="cmd">t.to("cuda") / t.cuda()</span>
@@ -323,6 +358,14 @@
                 <span class="desc">沿新维度堆叠张量</span>
             </div>
             <div class="item">
+                <span class="cmd">torch.split(t, split_size_or_sections, dim=0)</span>
+                <span class="desc">按指定大小或段数切分</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.chunk(t, chunks, dim=0)</span>
+                <span class="desc">平均切分为若干块</span>
+            </div>
+            <div class="item">
                 <span class="cmd">t.flatten(start_dim=1)</span>
                 <span class="desc">展平张量 (常用于全连接层前)</span>
             </div>
@@ -360,6 +403,30 @@
                 <span class="desc">求最大值的索引</span>
             </div>
             <div class="item">
+                <span class="cmd">torch.where(cond, a, b)</span>
+                <span class="desc">按条件选择元素</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.equal(a, b) / torch.all(a == b)</span>
+                <span class="desc">张量整体相等判断</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.linalg.norm(t, dim=-1)</span>
+                <span class="desc">向量或矩阵范数</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.exp(t) / torch.log(t)</span>
+                <span class="desc">指数与对数</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.min(t, dim)</span>
+                <span class="desc">求最小值 (返回 values 和 indices)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.tanh(t)</span>
+                <span class="desc">双曲正切激活</span>
+            </div>
+            <div class="item">
                 <span class="cmd">torch.clamp(t, min, max)</span>
                 <span class="desc">数值截断 (夹逼)</span>
             </div>
@@ -369,40 +436,52 @@
         <div class="section">
             <h2>神经网络层 (torch.nn)</h2>
             <div class="item">
+                <span class="cmd">class Net(nn.Module):</span>
+                <span class="desc">自定义模型基类</span>
+            </div>
+            <div class="item">
                 <span class="cmd">nn.Linear(in_ft, out_ft)</span>
                 <span class="desc">全连接层 (Linear Layer)</span>
             </div>
             <div class="item">
-                <span class="cmd">nn.Conv2d(in_c, out_c, k_size)</span>
-                <span class="desc">2D 卷积层</span>
+                <span class="cmd">nn.Sequential(...)</span>
+                <span class="desc">顺序容器，快速搭建模型</span>
             </div>
             <div class="item">
-                <span class="cmd">nn.MaxPool2d(kernel_size)</span>
-                <span class="desc">最大池化</span>
+                <span class="cmd">nn.ModuleList([...]) / nn.ModuleDict({...})</span>
+                <span class="desc">模块集合容器</span>
             </div>
             <div class="item">
-                <span class="cmd">nn.BatchNorm2d(num_features)</span>
-                <span class="desc">批标准化 (Batch Norm)</span>
+                <span class="cmd">nn.Parameter(torch.zeros(...))</span>
+                <span class="desc">可训练参数</span>
             </div>
             <div class="item">
-                <span class="cmd">nn.Dropout(p=0.5)</span>
+                <span class="cmd">nn.LayerNorm(hidden)</span>
+                <span class="desc">层归一化</span>
+            </div>
+            <div class="item">
+                <span class="cmd">nn.Dropout(p=0.1)</span>
                 <span class="desc">随机失活 (防过拟合)</span>
             </div>
             <div class="item">
-                <span class="cmd">nn.ReLU() / nn.Sigmoid()</span>
+                <span class="cmd">nn.GELU() / nn.SiLU() / nn.Tanh() / nn.ReLU()</span>
                 <span class="desc">常用激活函数</span>
-            </div>
-            <div class="item">
-                <span class="cmd">nn.Softmax(dim=1)</span>
-                <span class="desc">归一化概率分布</span>
             </div>
             <div class="item">
                 <span class="cmd">nn.Embedding(num, dim)</span>
                 <span class="desc">词嵌入层</span>
             </div>
             <div class="item">
-                <span class="cmd">nn.Sequential(...)</span>
-                <span class="desc">顺序容器，快速搭建模型</span>
+                <span class="cmd">nn.Identity()</span>
+                <span class="desc">恒等映射占位层</span>
+            </div>
+            <div class="item">
+                <span class="cmd">nn.TransformerDecoderLayer(d_model, nhead)</span>
+                <span class="desc">Transformer 解码层</span>
+            </div>
+            <div class="item">
+                <span class="cmd">nn.DataParallel(model)</span>
+                <span class="desc">单机多卡数据并行</span>
             </div>
         </div>
 
@@ -416,6 +495,14 @@
             <div class="item">
                 <span class="cmd">optimizer = optim.Adam(model.parameters(), lr=0.001)</span>
                 <span class="desc">定义优化器 (Adam)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">optimizer = optim.AdamW(model.parameters(), lr=0.001)</span>
+                <span class="desc">定义优化器 (AdamW)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=1000)</span>
+                <span class="desc">学习率调度器</span>
             </div>
             <div class="item">
                 <span class="cmd">optimizer.zero_grad()</span>
@@ -437,9 +524,42 @@
                 <span class="cmd">optimizer.step()</span>
                 <span class="desc">5. 更新参数 (Update)</span>
             </div>
+            <div class="item">
+                <span class="cmd">scheduler.step()</span>
+                <span class="desc">6. 更新学习率</span>
+            </div>
         </div>
 
-        <!-- 模块 7: 自动求导 -->
+        <!-- 模块 7: 函数式与损失 -->
+        <div class="section">
+            <h2>函数式与损失 (torch.nn.functional)</h2>
+            <div class="item">
+                <span class="cmd">F.pad(t, (0, pad), value=0)</span>
+                <span class="desc">张量填充 (常用于序列)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">F.interpolate(x, scale_factor=2, mode="bilinear")</span>
+                <span class="desc">插值上采样</span>
+            </div>
+            <div class="item">
+                <span class="cmd">F.log_softmax(logits, dim=-1)</span>
+                <span class="desc">数值稳定的 log-softmax</span>
+            </div>
+            <div class="item">
+                <span class="cmd">F.cross_entropy(logits, target)</span>
+                <span class="desc">交叉熵损失</span>
+            </div>
+            <div class="item">
+                <span class="cmd">F.mse_loss(pred, target)</span>
+                <span class="desc">均方误差损失</span>
+            </div>
+            <div class="item">
+                <span class="cmd">F.gelu(x) / F.silu(x) / F.relu(x)</span>
+                <span class="desc">常用激活的函数式接口</span>
+            </div>
+        </div>
+
+        <!-- 模块 8: 自动求导 -->
         <div class="section">
             <h2>自动求导 (Autograd)</h2>
             <div class="item">
@@ -468,7 +588,7 @@
             </div>
         </div>
 
-        <!-- 模块 8: 数据处理 -->
+        <!-- 模块 9: 数据处理 -->
         <div class="section">
             <h2>数据处理 (Data)</h2>
             <div class="item">
@@ -480,6 +600,10 @@
                 <span class="desc">构建数据加载器 (批处理、打乱)</span>
             </div>
             <div class="item">
+                <span class="cmd">torch.utils.data</span>
+                <span class="desc">数据集与加载器工具集</span>
+            </div>
+            <div class="item">
                 <span class="cmd">inputs, labels = next(iter(loader))</span>
                 <span class="desc">获取一个 Batch 的数据</span>
             </div>
@@ -489,7 +613,56 @@
             </div>
         </div>
 
-        <!-- 模块 9: 模型保存与加载 -->
+        <!-- 模块 10: 设备与分布式 -->
+        <div class="section">
+            <h2>设备与分布式 (Device/Distributed)</h2>
+            <div class="item">
+                <span class="cmd">torch.cuda.is_available()</span>
+                <span class="desc">检查 GPU 是否可用</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.cuda.device_count()</span>
+                <span class="desc">GPU 数量</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.cuda.current_device()</span>
+                <span class="desc">当前 GPU 索引</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.cuda.set_device(rank)</span>
+                <span class="desc">设置当前进程使用的 GPU</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.cuda.empty_cache()</span>
+                <span class="desc">释放未使用的显存缓存</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.cuda.synchronize()</span>
+                <span class="desc">等待当前设备完成计算</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.distributed.get_rank()</span>
+                <span class="desc">获取当前进程 rank</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.distributed.get_world_size()</span>
+                <span class="desc">获取进程总数</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.distributed.all_reduce(t, op=torch.distributed.ReduceOp.SUM)</span>
+                <span class="desc">分布式规约同步</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.distributed.barrier()</span>
+                <span class="desc">全局同步屏障</span>
+            </div>
+            <div class="item">
+                <span class="cmd">torch.multiprocessing</span>
+                <span class="desc">多进程工具 (分布式启动)</span>
+            </div>
+        </div>
+
+        <!-- 模块 11: 模型保存与加载 -->
         <div class="section">
             <h2>保存与加载 (Save/Load)</h2>
             <div class="item">
@@ -518,7 +691,7 @@
             </div>
         </div>
 
-        <!-- 模块 10: 实用技巧 -->
+        <!-- 模块 12: 实用技巧 -->
         <div class="section">
             <h2>实用技巧 (Tips)</h2>
             <div class="item">
@@ -526,28 +699,24 @@
                 <span class="desc">设置随机种子 (复现性)</span>
             </div>
             <div class="item">
-                <span class="cmd">if torch.cuda.is_available():</span>
-                <span class="desc">检查 GPU 是否可用</span>
+                <span class="cmd">g = torch.Generator().manual_seed(42)</span>
+                <span class="desc">显式生成器控制随机性</span>
             </div>
             <div class="item">
-                <span class="cmd">torch.cuda.device_count()</span>
-                <span class="desc">GPU 数量</span>
-            </div>
-            <div class="item">
-                <span class="cmd">nn.functional.softmax(x, dim=1)</span>
-                <span class="desc">函数式接口 (无状态层)</span>
+                <span class="cmd">torch.Generator(device="cuda")</span>
+                <span class="desc">为特定设备创建随机生成器</span>
             </div>
             <div class="item">
                 <span class="cmd">t.clone()</span>
                 <span class="desc">深拷贝张量 (记录梯度历史)</span>
             </div>
-             <div class="item">
+            <div class="item">
                 <span class="cmd">torch.set_printoptions(precision=4)</span>
                 <span class="desc">设置打印精度</span>
             </div>
         </div>
 
-        <!-- 模块 11: 维度操作示例 -->
+        <!-- 模块 13: 维度操作示例 -->
         <div class="section">
             <h2>维度操作图解</h2>
             <div class="item">
@@ -558,7 +727,7 @@
                 <span class="cmd">dim=1</span>
                 <span class="desc">列方向 (向右压缩) / 特征/通道维度</span>
             </div>
-             <div class="item">
+            <div class="item">
                 <span class="cmd">keepdim=True</span>
                 <span class="desc">保持聚合后的维度为 1，便于广播</span>
             </div>
