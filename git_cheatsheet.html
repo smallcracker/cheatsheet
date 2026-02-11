@@ -259,7 +259,7 @@
         <div style="margin-top: 10px;">
             <div class="alert-box">
                 <strong>⚠️ 开始工作前，请务必先建分支！</strong><br>
-                <code>$ git switch -c &lt;新分支名&gt;</code>
+                <code>git switch -c &lt;新分支名&gt;</code>
             </div>
         </div>
     </header>
@@ -270,11 +270,15 @@
             <h2>设置</h2>
             <div class="item">
                 <span class="desc">设置附加到提交和标签的姓名和邮箱</span>
-                <span class="cmd">$ git config --global user.name "你的姓名"<br>$ git config --global user.email "name@email.com"</span>
+                <span class="cmd">git config --global user.name "你的姓名"<br>git config --global user.email "name@email.com"</span>
             </div>
             <div class="item">
                 <span class="desc">配置 Git 代理 (HTTP/HTTPS)</span>
-                <span class="cmd">$ git config --global http.proxy http://127.0.0.1:7890<br>$ git config --global https.proxy http://127.0.0.1:7890</span>
+                <span class="cmd">git config --global http.proxy http://127.0.0.1:7890<br>git config --global https.proxy http://127.0.0.1:7890</span>
+            </div>
+            <div class="item">
+                <span class="desc">强制使用 LF 换行符</span>
+                <span class="cmd">git config --global core.autocrlf input</span>
             </div>
         </div>
 
@@ -283,11 +287,11 @@
             <h2>开始项目</h2>
             <div class="item">
                 <span class="desc">创建本地仓库 (省略目录初始化当前目录)</span>
-                <span class="cmd">$ git init &lt;目录&gt;</span>
+                <span class="cmd">git init &lt;目录&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">下载远程仓库</span>
-                <span class="cmd">$ git clone &lt;仓库地址&gt;</span>
+                <span class="cmd">git clone &lt;仓库地址&gt;</span>
             </div>
         </div>
 
@@ -305,19 +309,19 @@
             <h2>进行修改</h2>
             <div class="item">
                 <span class="desc">添加文件到暂存区</span>
-                <span class="cmd">$ git add &lt;文件&gt;</span>
+                <span class="cmd">git add &lt;文件&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">暂存所有文件</span>
-                <span class="cmd">$ git add .</span>
+                <span class="cmd">git add .</span>
             </div>
             <div class="item">
                 <span class="desc">提交所有暂存的文件</span>
-                <span class="cmd">$ git commit -m "提交信息"</span>
+                <span class="cmd">git commit -m "提交信息"</span>
             </div>
             <div class="item">
                 <span class="desc">修改最后一次提交 (修正信息或补漏)</span>
-                <span class="cmd">$ git commit --amend -m "新的提交信息"</span>
+                <span class="cmd">git commit --amend -m "新的提交信息"</span>
             </div>
         </div>
 
@@ -326,35 +330,49 @@
             <h2>分支</h2>
             <div class="item">
                 <span class="desc">列出分支 (-r 远程, -a 所有)</span>
-                <span class="cmd">$ git branch</span>
+                <span class="cmd">git branch</span>
             </div>
             <div class="item">
                 <span class="desc">查看分支及跟踪的远程分支</span>
-                <span class="cmd">$ git branch -vv</span>
+                <span class="cmd">git branch -vv</span>
+            </div>
+            <div class="item">
+                <span class="desc">为当前分支关联远程分支</span>
+                <span class="cmd">git branch -u &lt;别名&gt;/&lt;远程分支&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">为指定分支关联远程分支</span>
+                <span class="cmd">git branch -u &lt;别名&gt;/&lt;远程分支&gt; &lt;本地分支&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">创建新分支</span>
-                <span class="cmd">$ git branch &lt;新分支名&gt;</span>
+                <span class="cmd">git branch &lt;新分支名&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">切换分支</span>
-                <span class="cmd">$ git checkout &lt;分支名&gt;<br>$ git switch &lt;分支名&gt;</span>
+                <span class="cmd">git checkout &lt;分支名&gt;<br>git switch &lt;分支名&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">切换到远程分支</span>
+                <div class="sub-desc">基于远程分支创建并跟踪同名分支、同时切换过去进行开发</div>
+                <span class="cmd">git checkout -t &lt;别名&gt;/&lt;分支&gt;<br>git switch -t &lt;别名&gt;/&lt;分支&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">创建并切换分支</span>
-                <span class="cmd">$ git checkout -b &lt;新&gt;<br>$ git switch -c &lt;新&gt;</span>
+                <div class="sub-desc">git switch 是新版命令，语义更清晰</div>
+                <span class="cmd">git checkout -b &lt;新分支名&gt;<br>git switch -c &lt;新分支名&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">删除分支 (-d 已合并, -D 强制)</span>
-                <span class="cmd">$ git branch -d &lt;分支名&gt;<br>$ git branch -D &lt;分支名&gt;</span>
+                <span class="cmd">git branch -d &lt;分支名&gt;<br>git branch -D &lt;分支名&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">打标签</span>
-                <span class="cmd">$ git tag &lt;名&gt;<br>$ git tag -a &lt;名&gt; -m "msg"</span>
+                <span class="cmd">git tag &lt;名&gt;<br>git tag -a &lt;名&gt; -m "msg"</span>
             </div>
             <div class="item">
                 <span class="desc">查看标签</span>
-                <span class="cmd">$ git tag<br>$ git show &lt;标签名&gt;</span>
+                <span class="cmd">git tag<br>git show &lt;标签名&gt;</span>
             </div>
         </div>
 
@@ -363,23 +381,23 @@
             <h2>合并</h2>
             <div class="item">
                 <span class="desc">合并分支 a 到 b (--no-ff 非快进)</span>
-                <span class="cmd">$ git checkout b<br>$ git merge a</span>
+                <span class="cmd">git checkout b<br>git merge a</span>
             </div>
             <div class="item">
                 <span class="desc">放弃合并 (冲突后)</span>
-                <span class="cmd">$ git merge --abort</span>
+                <span class="cmd">git merge --abort</span>
             </div>
             <div class="item">
                 <span class="desc">压缩合并 (所有提交压缩为一个)</span>
-                <span class="cmd">$ git merge --squash a</span>
+                <span class="cmd">git merge --squash a</span>
             </div>
             <div class="item">
                 <span class="desc">摘樱桃 (应用特定提交)</span>
-                <span class="cmd">$ git cherry-pick &lt;commit&gt;</span>
+                <span class="cmd">git cherry-pick &lt;commit&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">摘樱桃冲突处理</span>
-                <span class="cmd">$ git cherry-pick --continue<br>$ git cherry-pick --abort</span>
+                <span class="cmd">git cherry-pick --continue<br>git cherry-pick --abort</span>
             </div>
         </div>
 
@@ -389,19 +407,19 @@
             <div class="item">
                 <span class="desc">将特性分支变基到主分支</span>
                 <div class="sub-desc">保持历史整洁，防止不必要的合并提交</div>
-                <span class="cmd">$ git checkout feature<br>$ git rebase main</span>
+                <span class="cmd">git checkout feature<br>git rebase main</span>
             </div>
             <div class="item">
                 <span class="desc">变基冲突处理</span>
-                <span class="cmd">$ git rebase --continue<br>$ git rebase --abort</span>
+                <span class="cmd">git rebase --continue<br>git rebase --abort</span>
             </div>
             <div class="item">
                 <span class="desc">交互式变基 (清理提交)</span>
-                <span class="cmd">$ git rebase -i main</span>
+                <span class="cmd">git rebase -i main</span>
             </div>
             <div class="item">
                 <span class="desc">交互式最后3个提交</span>
-                <span class="cmd">$ git rebase -i HEAD~3</span>
+                <span class="cmd">git rebase -i HEAD~3</span>
             </div>
             <div class="item">
                 <span class="desc">Todo 列表常用命令</span>
@@ -421,39 +439,39 @@
             <h2>撤销操作</h2>
             <div class="item">
                 <span class="desc">移动/重命名并暂存</span>
-                <span class="cmd">$ git mv &lt;原&gt; &lt;新&gt;</span>
+                <span class="cmd">git mv &lt;原&gt; &lt;新&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">删除文件并暂存</span>
-                <span class="cmd">$ git rm &lt;文件&gt;</span>
+                <span class="cmd">git rm &lt;文件&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">仅从暂存区删除 (保留文件)</span>
-                <span class="cmd">$ git rm --cached &lt;文件&gt;</span>
+                <span class="cmd">git rm --cached &lt;文件&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">查看/临时检出提交 (Detached HEAD)</span>
-                <span class="cmd">$ git checkout &lt;commit-ish&gt;<br>$ git switch --detach &lt;...&gt;</span>
+                <span class="cmd">git checkout &lt;commit-ish&gt;<br>git switch --detach &lt;...&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">创建撤销提交 (反向操作)</span>
-                <span class="cmd">$ git revert &lt;commit-ish&gt;</span>
+                <span class="cmd">git revert &lt;commit-ish&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">丢弃工作区修改</span>
-                <span class="cmd">$ git checkout -- &lt;文件&gt;<br>$ git restore &lt;文件&gt;</span>
+                <span class="cmd">git checkout -- &lt;文件&gt;<br>git restore &lt;文件&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">取消暂存 (保留工作区)</span>
-                <span class="cmd">$ git restore --staged &lt;文件&gt;</span>
+                <span class="cmd">git restore --staged &lt;文件&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">Reset 重置分支指针</span>
-                <span class="cmd">$ git reset --soft &lt;commit&gt;<br><span style="color:#666"># 移动HEAD，保留暂存/工作区</span><br>$ git reset &lt;commit&gt;<br><span style="color:#666"># 重置暂存区，保留工作区</span><br>$ git reset --hard &lt;commit&gt;<br><span style="color:#666"># ⚠️ 重置暂存和工作区</span></span>
+                <span class="cmd">git reset --soft &lt;commit&gt;<br><span style="color:#666"># 移动HEAD，保留暂存/工作区</span><br>git reset &lt;commit&gt;<br><span style="color:#666"># 重置暂存区，保留工作区</span><br>git reset --hard &lt;commit&gt;<br><span style="color:#666"># ⚠️ 重置暂存和工作区</span></span>
             </div>
             <div class="item">
                 <span class="desc">清除未跟踪文件 (-n 预览)</span>
-                <span class="cmd">$ git clean -nfd<br>$ git clean -fd</span>
+                <span class="cmd">git clean -nfd<br>git clean -fd</span>
             </div>
         </div>
 
@@ -462,27 +480,27 @@
             <h2>查看仓库</h2>
             <div class="item">
                 <span class="desc">查看状态 (s: 紧凑)</span>
-                <span class="cmd">$ git status<br>$ git status -sb</span>
+                <span class="cmd">git status<br>git status -sb</span>
             </div>
             <div class="item">
                 <span class="desc">查看历史</span>
-                <span class="cmd">$ git log --oneline<br>$ git log --graph --oneline --decorate --all</span>
+                <span class="cmd">git log --oneline<br>git log --graph --oneline --decorate --all</span>
             </div>
             <div class="item">
                 <span class="desc">查看对象详细内容</span>
-                <span class="cmd">$ git show &lt;commit-ish&gt;</span>
+                <span class="cmd">git show &lt;commit-ish&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">查看差异</span>
-                <span class="cmd">$ git diff # 工作区 vs 暂存<br>$ git diff --cached # 暂存 vs HEAD<br>$ git diff c1 c2 # 提交间差异</span>
+                <span class="cmd">git diff # 工作区 vs 暂存<br>git diff --cached # 暂存 vs HEAD<br>git diff c1 c2 # 提交间差异</span>
             </div>
             <div class="item">
                 <span class="desc">引用日志 (找回丢失提交)</span>
-                <span class="cmd">$ git reflog</span>
+                <span class="cmd">git reflog</span>
             </div>
             <div class="item">
                 <span class="desc">查看每行修改人 (Blame)</span>
-                <span class="cmd">$ git blame &lt;文件&gt;</span>
+                <span class="cmd">git blame &lt;文件&gt;</span>
             </div>
         </div>
 
@@ -491,27 +509,27 @@
             <h2>储藏 (Stash)</h2>
             <div class="item">
                 <span class="desc">暂存更改 (-u 含未跟踪)</span>
-                <span class="cmd">$ git stash<br>$ git stash push -m "msg"</span>
+                <span class="cmd">git stash<br>git stash push -m "msg"</span>
             </div>
             <div class="item">
                 <span class="desc">列出所有储藏</span>
-                <span class="cmd">$ git stash list</span>
+                <span class="cmd">git stash list</span>
             </div>
             <div class="item">
                 <span class="desc">应用最近储藏 (保持堆栈)</span>
-                <span class="cmd">$ git stash apply</span>
+                <span class="cmd">git stash apply</span>
             </div>
             <div class="item">
                 <span class="desc">弹出储藏 (从堆栈删除)</span>
-                <span class="cmd">$ git stash pop stash@{2}</span>
+                <span class="cmd">git stash pop stash@{2}</span>
             </div>
             <div class="item">
                 <span class="desc">应用并恢复暂存区状态</span>
-                <span class="cmd">$ git stash pop --index</span>
+                <span class="cmd">git stash pop --index</span>
             </div>
             <div class="item">
                 <span class="desc">删除储藏</span>
-                <span class="cmd">$ git stash drop stash@{0}<br>$ git stash clear</span>
+                <span class="cmd">git stash drop stash@{0}<br>git stash clear</span>
             </div>
         </div>
 
@@ -520,35 +538,75 @@
             <h2>同步</h2>
             <div class="item">
                 <span class="desc">管理远程仓库</span>
-                <span class="cmd">$ git remote add &lt;别名&gt; &lt;url&gt;<br>$ git remote -v</span>
+                <span class="cmd">git remote add &lt;别名&gt; &lt;url&gt;<br>git remote -v</span>
             </div>
             <div class="item">
                 <span class="desc">获取分支 (不合并)</span>
-                <span class="cmd">$ git fetch &lt;别名&gt;<br>$ git fetch --prune &lt;别名&gt;</span>
+                <span class="cmd">git fetch &lt;别名&gt;<br>git fetch --prune &lt;别名&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">获取并合并</span>
-                <span class="cmd">$ git pull<br>$ git pull --rebase &lt;别名&gt;</span>
+                <span class="cmd">git pull<br>git pull --rebase &lt;别名&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">推送</span>
-                <span class="cmd">$ git push &lt;别名&gt;</span>
+                <span class="cmd">git push &lt;别名&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">推送到指定分支</span>
-                <span class="cmd">$ git push &lt;别名&gt; &lt;分支&gt;</span>
+                <span class="cmd">git push &lt;别名&gt; &lt;分支&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">推送本地到不同名远程分支</span>
-                <span class="cmd">$ git push &lt;别名&gt; &lt;本&gt;:&lt;远&gt;</span>
+                <span class="cmd">git push &lt;别名&gt; &lt;本&gt;:&lt;远&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">首次推送并设置追踪</span>
-                <span class="cmd">$ git push -u &lt;别名&gt; &lt;分支&gt;</span>
+                <span class="cmd">git push -u &lt;别名&gt; &lt;分支&gt;</span>
             </div>
             <div class="item">
                 <span class="desc">推送标签</span>
-                <span class="cmd">$ git push &lt;别名&gt; --tags</span>
+                <span class="cmd">git push &lt;别名&gt; --tags</span>
+            </div>
+            <div class="item">
+                <span class="desc">强制本地分支同步远程分支</span>
+                <div class="sub-desc">放弃未提交的改动，用于处理本地混乱的提交历史</div>
+                <span class="cmd">git reset --hard &lt;别名&gt;/&lt;分支&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">压缩合并 (Squash Merge)</span>
+                <div class="sub-desc">合并变更但不生成提交，将目标分支的多次提交 “压扁” 成一次未提交的修改</div>
+                <span class="cmd">git merge --squash &lt;分支&gt;</span>
+            </div>
+            <div class="item">
+                <span class="desc">强制推送 (慎用)</span>
+                <div class="sub-desc">覆盖远程分支历史，仅用于自己独占的分支</div>
+                <span class="cmd">git push --force &lt;别名&gt; &lt;分支&gt;</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>工作流：Fork 模式开发</h2>
+            <div class="item">
+                <span class="desc">核心定义</span>
+                <div class="sub-desc" style="line-height: 1.4;">
+                    <strong>[分支]</strong> <strong>main</strong>:镜像(只同步) | <strong>dev</strong>:纯净(提PR) | <strong>local-dev</strong>:本地(含配置)<br>
+                    <strong>[仓库]</strong> <strong>upstream</strong>:官方 | <strong>origin</strong>:个人Fork
+                </div>
+            </div>
+            <div class="item">
+                <span class="desc">1. 同步官方代码 (Daily Routine)</span>
+                <span class="cmd">git switch main<br>git fetch upstream<br>git reset --hard upstream/main <span style="color:#999"># 强制一致</span><br>git push origin main --force</span>
+            </div>
+
+            <div class="item">
+                <span class="desc">2. 日常开发 (在 local-dev)</span>
+                <span class="cmd">git switch local-dev<br>git rebase main <span style="color:#999"># 同步更新</span><br><span style="color:#999"># ... 正常开发 ...</span><br>git add . && git commit -m "WIP..."</span>
+            </div>
+
+            <div class="item">
+                <span class="desc">3. 提交流程 (清洗代码 -> Dev)</span>
+                <span class="cmd">git switch dev<br>git reset --hard main <span style="color:#999"># 重置基准</span><br>git merge --squash local-dev <span style="color:#999"># 压缩合并</span><br><span style="color:#999"># ... 剔除配置 ...</span><br>git commit -m "Feat: ..." <br>git push origin dev -f</span>
             </div>
         </div>
 
