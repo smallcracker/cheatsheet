@@ -301,8 +301,8 @@
                 <span class="desc">NumPy 转 Tensor (共享内存)</span>
             </div>
             <div class="item">
-                <span class="cmd">torch.as_tensor(data)</span>
-                <span class="desc">尽量零拷贝构造张量</span>
+                <span class="cmd">torch.as_tensor(data, dtype=None, device=None)</span>
+                <span class="desc">尽量零拷贝构造张量 (可指定类型和设备)</span>
             </div>
             <div class="item">
                 <span class="cmd">torch.is_tensor(x)</span>
@@ -580,7 +580,11 @@
             </div>
             <div class="item">
                 <span class="cmd">x.detach()</span>
-                <span class="desc">返回一个从计算图分离的新张量</span>
+                <span class="desc">返回一个从计算图分离的新张量 (常用于截断反向传播)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">x.detach().cpu().numpy()</span>
+                <span class="desc">将带梯度的张量转为 NumPy 数组 (常用组合)</span>
             </div>
             <div class="item">
                 <span class="cmd">x.grad.zero_()</span>
@@ -674,6 +678,15 @@
                 <span class="desc">加载模型参数</span>
             </div>
             <div class="item">
+                <span class="cmd">model1.load_state_dict(model2.state_dict())</span>
+                <span class="desc">在模型间复制参数 (常用于目标网络更新)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">for p_tgt, p in zip(target.parameters(), net.parameters()):
+    p_tgt.data.copy_(p_tgt.data * (1 - tau) + p.data * tau)</span>
+                <span class="desc">目标网络软更新 (Soft Update)</span>
+            </div>
+            <div class="item">
                 <span class="cmd">torch.save(model, 'model.pth')</span>
                 <span class="desc">保存整个模型 (结构+参数)</span>
             </div>
@@ -691,7 +704,32 @@
             </div>
         </div>
 
-        <!-- 模块 12: 实用技巧 -->
+        <!-- 模块 12: 概率分布 -->
+        <div class="section">
+            <h2>概率分布 (Distributions)</h2>
+            <div class="item">
+                <span class="cmd">from torch.distributions import Categorical</span>
+                <span class="desc">导入类别分布 (常用于强化学习离散动作)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">dist = Categorical(logits=logits)</span>
+                <span class="desc">根据 logits (未归一化概率) 创建分布</span>
+            </div>
+            <div class="item">
+                <span class="cmd">action = dist.sample()</span>
+                <span class="desc">按概率采样动作</span>
+            </div>
+            <div class="item">
+                <span class="cmd">log_probs = dist.log_prob(actions)</span>
+                <span class="desc">计算动作的对数概率 (actions 必须是 torch.long)</span>
+            </div>
+            <div class="item">
+                <span class="cmd">entropy = dist.entropy()</span>
+                <span class="desc">计算分布的熵 (常用于鼓励探索)</span>
+            </div>
+        </div>
+
+        <!-- 模块 13: 实用技巧 -->
         <div class="section">
             <h2>实用技巧 (Tips)</h2>
             <div class="item">
@@ -716,7 +754,7 @@
             </div>
         </div>
 
-        <!-- 模块 13: 维度操作示例 -->
+        <!-- 模块 14: 维度操作示例 -->
         <div class="section">
             <h2>维度操作图解</h2>
             <div class="item">
