@@ -185,6 +185,44 @@
             margin: 0 0 2px 0;
         }
 
+        .naming-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        .naming-table th {
+            text-align: left;
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--accent-color);
+            padding-bottom: 4px;
+            font-weight: bold;
+        }
+
+        .naming-table td {
+            padding: 4px 2px;
+            border-bottom: 1px solid #eee;
+            color: var(--text-primary);
+            vertical-align: top;
+        }
+
+        .naming-table code {
+            font-family: var(--code-font);
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-size: 11px;
+            word-break: break-all;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .naming-table td {
+                border-bottom: 1px solid #333;
+            }
+        }
+
         @media print {
             body {
                 background: white;
@@ -601,6 +639,79 @@
                 <span class="desc">兼容 pip 的安装命令 (极速模式)</span>
             </div>
         </div>
+
+        <!-- 模块 12: Python 命名规范 -->
+        <div class="section">
+            <h2>Python 命名规范</h2>
+            <table class="naming-table">
+                <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>公有 (Public)</th>
+                        <th>内部 (Internal)</th>
+                    </tr>-
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>包</td>
+                        <td><code>lower_with_under</code></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>模块</td>
+                        <td><code>lower_with_under</code></td>
+                        <td><code>_前缀</code></td>
+                    </tr>
+                    <tr>
+                        <td>类</td>
+                        <td><code>CapWords</code></td>
+                        <td><code>_前缀</code></td>
+                    </tr>
+                    <tr>
+                        <td>异常</td>
+                        <td><code>CapWords</code></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>函数</td>
+                        <td><code>lower_with_under()</code></td>
+                        <td><code>_前缀</code></td>
+                    </tr>
+                    <tr>
+                        <td>常量</td>
+                        <td><code>CAPS_WITH_UNDER</code></td>
+                        <td><code>_前缀</code></td>
+                    </tr>
+                    <tr>
+                        <td>全局/类变量</td>
+                        <td><code>lower_with_under</code></td>
+                        <td><code>_前缀</code></td>
+                    </tr>
+                    <tr>
+                        <td>实例变量</td>
+                        <td><code>lower_with_under</code></td>
+                        <td><code>_前缀</code></td>
+                    </tr>
+                    <tr>
+                        <td>方法</td>
+                        <td><code>lower_with_under()</code></td>
+                        <td><code>_前缀</code></td>
+                    </tr>
+                    <tr>
+                        <td>参数</td>
+                        <td><code>lower_with_under</code></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>局部变量</td>
+                        <td><code>lower_with_under</code></td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
 
 </body>
 
