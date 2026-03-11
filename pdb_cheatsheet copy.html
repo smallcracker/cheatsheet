@@ -558,6 +558,46 @@
                 <span class="desc">删除环境 (直接删除文件夹即可)</span>
             </div>
         </div>
+        <!-- 模块: Pipenv 环境管理 -->
+        <div class="section">
+            <h2>Pipenv 环境管理</h2>
+            <div class="item block">
+                <span class="cmd">pip install --user pipenv</span>
+                <span class="desc">为当前用户安装 Pipenv (跨平台 命令相同)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">cd my_project && pipenv install</span>
+                <span class="desc">在项目目录初始化 Pipenv<br>创建虚拟环境 同时生成 Pipfile / Pipfile.lock</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pipenv install requests</span>
+                <span class="desc">在当前项目环境中安装依赖<br>自动写入 Pipfile 并更新 Pipfile.lock</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pipenv install --dev pytest</span>
+                <span class="desc">安装开发依赖 (dev 分组)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pipenv run python main.py</span>
+                <span class="desc">在 Pipenv 虚拟环境中运行脚本/命令 (不手动激活)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pipenv shell</span>
+                <span class="desc">进入当前项目虚拟环境交互式 Shell</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">exit / Ctrl-D</span>
+                <span class="desc">退出 Pipenv shell (环境自动退出)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pipenv sync</span>
+                <span class="desc">根据 Pipfile.lock 精确重建环境 (部署/CI 推荐)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">pipenv graph</span>
+                <span class="desc">查看依赖树 (包含间接依赖)</span>
+            </div>
+        </div>
         <!-- 模块 10: Conda环境管理 -->
         <div class="section">
             <h2>Conda 环境管理</h2>
