@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Cheatsheet - 一图流风格</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: transparent;
+            --text-primary: #333333;
+            --text-secondary: #444444;
+            --accent-color: #00008b;
+            /* Deep Blue */
+            --code-bg: #acbecd;
+            /* Light Blue */
+            --code-text: #000000;
+            --border-radius: 0;
+            --spacing: 10px;
+            --font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --code-font: "Consolas", "Monaco", "Courier New", monospace;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1e1e1e;
+                --card-bg: transparent;
+                --text-primary: #e0e0e0;
+                --text-secondary: #cccccc;
+                --accent-color: #82aaff;
+                --code-bg: #2d3b4d;
+                --code-text: #d6deeb;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-size: 13px;
+            line-height: 1.3;
+            padding: 15px;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-height: 800px) {
+            body {
+                height: auto;
+                overflow: auto;
+            }
+        }
+
+        header {
+            text-align: left;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: var(--accent-color);
+            margin-bottom: 0;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        main {
+            column-count: 6;
+            column-gap: 20px;
+            column-rule: 1px solid #e0e0e0;
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+
+        @media (max-width: 1600px) {
+            main {
+                column-count: 5;
+            }
+        }
+
+        @media (max-width: 1400px) {
+            main {
+                column-count: 4;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            main {
+                column-count: 3;
+            }
+        }
+
+        @media (max-width: 800px) {
+            main {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 600px) {
+            main {
+                column-count: 1;
+            }
+        }
+
+        .section {
+            background: var(--card-bg);
+            padding: 0;
+            margin-bottom: 20px;
+            break-inside: auto;
+            border: none;
+            box-shadow: none;
+        }
+
+        .section h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--accent-color);
+            border-bottom: none;
+            padding-bottom: 0;
+            font-weight: bold;
+            display: block;
+            break-after: avoid;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column-reverse;
+            margin-bottom: 8px;
+            font-size: 13px;
+            break-inside: avoid;
+        }
+
+        .item:last-child {
+            margin-bottom: 0;
+        }
+
+        .cmd {
+            font-family: var(--code-font);
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 4px 8px;
+            border-radius: 0;
+            font-weight: normal;
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: block;
+            width: 100%;
+            margin-top: 2px;
+        }
+
+        .cmd::before {
+            content: "";
+            color: #888;
+            user-select: none;
+        }
+
+        .desc {
+            color: var(--text-primary);
+            text-align: left;
+            font-size: 13px;
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+
+        .item.block {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .item.block .desc {
+            text-align: left;
+            margin: 0 0 2px 0;
+        }
+
+        @media print {
+            body {
+                background: white;
+                height: auto;
+                overflow: visible;
+                padding: 0;
+            }
+
+            main {
+                column-count: 4;
+            }
+
+            .cmd {
+                background-color: #c9dbeaff !important;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Docker Cheatsheet</h1>
+        <p class="subtitle">面向机器学习项目的 Docker 运维速查表</p>
+    </header>
+
+    <main>
+        <!-- 运行新容器 -->
+        <div class="section">
+            <h2>运行新容器</h2>
+            <div class="item block">
+                <span class="cmd">docker run nginx</span>
+                <span class="desc">从镜像启动新容器 (格式: docker run [OPTIONS] IMAGE [COMMAND])</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run --name web nginx</span>
+                <span class="desc">指定容器名称</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run -p 8080:80 nginx</span>
+                <span class="desc">映射端口 宿主机:容器 (-P 映射所有暴露端口)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run --hostname svr nginx</span>
+                <span class="desc">指定容器主机名</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run --add-host db:192.168.1.1 nginx</span>
+                <span class="desc">添加 DNS 记录 (主机名:IP)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run -v /宿主机路径:/容器路径 nginx</span>
+                <span class="desc">挂载本地目录到容器</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run -itd nginx</span>
+                <span class="desc">后台运行且保留交互 (-i 交互 -t 伪终端 -d 后台)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run --entrypoint bash nginx</span>
+                <span class="desc">覆盖镜像默认入口命令</span>
+            </div>
+        </div>
+
+        <!-- 管理容器 -->
+        <div class="section">
+            <h2>管理容器</h2>
+            <div class="item block">
+                <span class="cmd">docker ps</span>
+                <span class="desc">列出正在运行的容器 (-a 含已停止)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker ps -a</span>
+                <span class="desc">列出所有容器</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker rm web</span>
+                <span class="desc">删除已停止的容器 (-f 强制删除运行中)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker container prune</span>
+                <span class="desc">删除所有已停止的容器</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker stop web</span>
+                <span class="desc">停止容器</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker start web</span>
+                <span class="desc">启动已停止的容器</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker cp web:/index.html .</span>
+                <span class="desc">从容器复制到宿主机 (容器:源 → 目标)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker cp index.html web:/index.html</span>
+                <span class="desc">从宿主机复制到容器</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker exec -it web bash</span>
+                <span class="desc">在运行中容器内启动 shell (进入容器)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker rename 096 web</span>
+                <span class="desc">重命名容器</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker commit web</span>
+                <span class="desc">从容器创建新镜像</span>
+            </div>
+        </div>
+
+        <!-- 数据与卷（ML 项目重点：数据别丢） -->
+        <div class="section">
+            <h2>数据与卷（持久化重点）</h2>
+            <div class="item block">
+                <span class="cmd">docker volume ls</span>
+                <span class="desc">
+                    查看所有 Docker 卷<br>（推荐用卷，数据（数据集、模型、长期日志）——优先放卷：稳定、可移植、易于备份和多机统一。）
+                </span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker volume create ml-data</span>
+                <span class="desc">创建卷，用来存放训练数据/模型等持久化内容</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run -v ml-data:/data my-ml-image</span>
+                <span class="desc">将卷挂载到容器内 `/data`，容器删掉数据仍在</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run -v $PWD/checkpoints:/checkpoints my-ml-image</span>
+                <span class="desc">直接把当前目录映射进容器：适合保存训练中间结果/日志</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker inspect ml-data</span>
+                <span class="desc">查看卷实际在宿主机上的路径（排错/备份时有用）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run --rm -v ml-data:/data alpine ls -lh /data</span>
+                <span class="desc">用一次性容器检查卷内数据情况（不要直接手改宿主机路径）</span>
+            </div>
+        </div>
+
+        <!-- 容器网络配置 -->
+        <div class="section">
+            <h2>容器网络配置</h2>
+            <div class="item block">
+                <span class="cmd">docker network ls</span>
+                <span class="desc">查看现有网络 (bridge / host / none / 自定义网络)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker network inspect bridge</span>
+                <span class="desc">查看指定网络详情 (子网 网关 已连接容器)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker network create mynet</span>
+                <span class="desc">创建自定义 bridge 网络 (容器可互相通过名称访问)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run --network mynet --name web nginx</span>
+                <span class="desc">在指定网络中启动容器 (同网容器可通过名称互访)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker network connect mynet db</span>
+                <span class="desc">将已存在容器连接到网络 (多网卡场景)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker network disconnect mynet db</span>
+                <span class="desc">将容器从某个网络移除</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run --network host nginx</span>
+                <span class="desc">使用宿主机网络 (无端口映射 直接占用宿主机端口)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run --network none nginx</span>
+                <span class="desc">完全隔离网络 (无网络访问)</span>
+            </div>
+        </div>
+
+        <!-- GPU / 资源限制（ML 训练必备） -->
+        <div class="section">
+            <h2>GPU 与资源限制</h2>
+            <div class="item block">
+                <span class="cmd">docker run --gpus all nvidia/cuda:12.2.0-base nvidia-smi</span>
+                <span class="desc">检查容器是否能看到 GPU（前提：宿主机已安装驱动 + nvidia-docker）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run --gpus '"device=0,1"' my-ml-image</span>
+                <span class="desc">只暴露指定编号 GPU，防止容器占掉全部卡</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run -m 16g --memory-swap 16g \
+  --cpus 8 my-ml-image</span>
+                <span class="desc">限制容器内最大内存和 CPU，防止 ML 任务吃满整机</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker update --cpus 4 --memory 8g my-ml-container</span>
+                <span class="desc">在线调整某个已存在容器的资源限制（视 Docker 版本而定）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker run --shm-size=16g my-ml-image</span>
+                <span class="desc">增大 /dev/shm，解决 PyTorch / Dataloader 因共享内存不足报错</span>
+            </div>
+        </div>
+
+        <!-- 管理镜像 -->
+        <div class="section">
+            <h2>管理镜像</h2>
+            <div class="item block">
+                <span class="cmd">docker pull nginx</span>
+                <span class="desc">拉取镜像 (可带 :TAG)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker push myimage:1.0</span>
+                <span class="desc">推送镜像到仓库</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker rmi nginx</span>
+                <span class="desc">删除镜像</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker images</span>
+                <span class="desc">列出本地镜像</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker image prune</span>
+                <span class="desc">删除虚悬镜像 (-a 删除所有未使用)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker build -t myimage .</span>
+                <span class="desc">从 Dockerfile 构建镜像并打标签</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker build .</span>
+                <span class="desc">从当前目录 Dockerfile 构建 (无标签)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker tag ubuntu ubuntu:18.04</span>
+                <span class="desc">给镜像打标签</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker save nginx > nginx.tar</span>
+                <span class="desc">将镜像导出为 .tar 文件</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker load -i nginx.tar</span>
+                <span class="desc">从 .tar 文件加载镜像</span>
+            </div>
+        </div>
+
+        <!-- 信息与统计 -->
+        <div class="section">
+            <h2>信息与统计</h2>
+            <div class="item block">
+                <span class="cmd">docker logs web</span>
+                <span class="desc">查看容器日志 (-f 实时跟踪)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker stats</span>
+                <span class="desc">查看运行中容器的 CPU/内存等统计</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker top web</span>
+                <span class="desc">查看容器内进程列表</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker version</span>
+                <span class="desc">查看 Docker 版本</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker inspect web</span>
+                <span class="desc">查看容器/镜像详细信息 (JSON)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker diff web</span>
+                <span class="desc">查看容器内相对镜像的文件变更</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker port web</span>
+                <span class="desc">查看容器端口映射</span>
+            </div>
+        </div>
+
+        <!-- 常见排错套路（按症状找命令） -->
+        <div class="section">
+            <h2>常见排错套路</h2>
+            <div class="item block">
+                <span class="cmd">docker logs -f 容器名</span>
+                <span class="desc">容器刚启动就退出 / 训练中断：第一步先看完整日志</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker inspect 容器名 | grep -i error</span>
+                <span class="desc">怀疑配置/挂载/网络有问题：看 inspect 中是否有明显错误字段</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker exec -it 容器名 bash</span>
+                <span class="desc">问题定位不到：直接进入容器里手动跑命令复现</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker stats</span>
+                <span class="desc">训练变慢/卡死：查看是否 CPU/GPU/内存打满，容器是否在 OOM 前挣扎</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">dmesg | tail -n 50</span>
+                <span class="desc">训练进程莫名其妙被杀：看宿主机内核日志是否有 OOM killer 记录</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker system df</span>
+                <span class="desc">磁盘快满：查看镜像/容器/卷各占多少空间</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker system prune -a</span>
+                <span class="desc">清理未使用的容器/镜像/网络（危险：会删掉没在用但未来可能要用的镜像）</span>
+            </div>
+        </div>
+
+        <!-- 私有镜像仓库与版本管理 -->
+        <div class="section">
+            <h2>镜像仓库与版本管理</h2>
+            <div class="item block">
+                <span class="cmd">docker login registry.example.com</span>
+                <span class="desc">登录私有镜像仓库（CI/CD 或多机训练前必做）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker tag my-ml-image:latest \
+  registry.example.com/ml/my-ml-image:2026-03-12</span>
+                <span class="desc">按日期/版本号给 ML 镜像打可追踪的 tag，方便回滚</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker push registry.example.com/ml/my-ml-image:2026-03-12</span>
+                <span class="desc">推送镜像到私有仓库，在多台训练机/生产环境复用</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">docker pull registry.example.com/ml/my-ml-image:2026-03-12</span>
+                <span class="desc">在其他机器上拉取同一版本镜像，确保训练环境一致</span>
+            </div>
+        </div>
+
+    </main>
+</body>
+
+</html>
