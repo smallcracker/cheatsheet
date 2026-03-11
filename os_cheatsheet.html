@@ -250,7 +250,7 @@
                 <span class="desc">列出所有文件(含隐藏)、显示大小/时间</span>
             </div>
             <div class="item block">
-                <span class="cmd">tree -h -L -a 2</span>
+                <span class="cmd">tree -h -L 2 -a</span>
                 <span class="desc">树形显示目录 (显示大小 限制深度 显示隐藏文件)</span>
             </div>
             <div class="item block">
@@ -398,15 +398,15 @@
                 <span class="desc">远程登录 (-X 转发图形界面)</span>
             </div>
             <div class="item block">
-                <span class="cmd">scp -v file user@host:/path</span>
+                <span class="cmd">scp -v file(源文件) user@host:/path(目标路径)</span>
                 <span class="desc">上传文件 (私有传输)</span>
             </div>
             <div class="item block">
-                <span class="cmd">scp -v user@host:/path/file .</span>
+                <span class="cmd">scp -v user@host:/path/file(源文件) .(目标路径)</span>
                 <span class="desc">下载文件 (私有传输)</span>
             </div>
             <div class="item block">
-                <span class="cmd">rsync -avzP dir/ user@host:/path</span>
+                <span class="cmd">rsync -avzP dir/(源目录) user@host:/path(目标路径)</span>
                 <span class="desc">增量同步目录 (推荐，支持断点续传)</span>
             </div>
             <div class="item block">
