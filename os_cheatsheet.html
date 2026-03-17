@@ -223,7 +223,7 @@
             }
 
             main {
-                column-count: 4;
+                column-count: 5;
             }
 
             .cmd {
@@ -282,6 +282,14 @@
                 <span class="desc">递归修改权限 (所有者全权, 其他只读)</span>
             </div>
             <div class="item block">
+                <span class="cmd">chown user:group file</span>
+                <span class="desc">修改文件的所有者和所属组</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">chmod u+w file</span>
+                <span class="desc">为文件 / 目录的所有者（owner）添加写入权限</span>
+            </div>
+            <div class="item block">
                 <span class="cmd">find . -name "*.py"</span>
                 <span class="desc">查找当前目录下的 .py 文件</span>
             </div>
@@ -292,6 +300,10 @@
             <div class="item block">
                 <span class="cmd">find . -iname "*log*"</span>
                 <span class="desc">找文件名含 log 的文件(不区分大小写)</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">find . -name "config.json"</span>
+                <span class="desc">在当前目录及子目录中查找名为 config.json 的文件<br>这个命令也可以用来查找文件夹</span>
             </div>
         </div>
 
@@ -537,7 +549,36 @@
             </div>
         </div>
 
-        <!-- 模块 8: 系统与硬件 -->
+        <!-- 模块 8: Tmux 会话管理 -->
+        <div class="section">
+            <h2>Tmux (会话复用)</h2>
+            <div class="item block">
+                <span class="cmd">tmux new -s 会话名</span>
+                <span class="desc">创建一个指定名称的会话</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">tmux ls</span>
+                <span class="desc">列出所有已存在的会话</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">tmux attach -t 会话名</span>
+                <span class="desc">连接到指定会话</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">Ctrl+b d</span>
+                <span class="desc">从当前会话分离（会话继续在后台运行）</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">tmux kill-session -t 会话名</span>
+                <span class="desc">关闭指定的会话</span>
+            </div>
+            <div class="item block">
+                <span class="cmd">Ctrl+b<br>然后输入:进入指令模式<br>最后输入set -g mouse on指令</span>
+                <span class="desc">进入命令模式并开启鼠标支持</span>
+            </div>
+        </div>
+
+        <!-- 模块 9: 系统与硬件 -->
         <div class="section">
             <h2>Hardware (系统与硬件)</h2>
             <div class="item block">
