@@ -90,25 +90,25 @@
             padding-bottom: 10px;
         }
 
-        @media (max-width: 1400px) {
+        @media (max-width: 1800px) {
             main {
                 column-count: 6;
             }
         }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 1500px) {
             main {
                 column-count: 5;
             }
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 1200px) {
             main {
                 column-count: 4;
             }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 900px) {
             main {
                 column-count: 3;
             }
@@ -204,7 +204,6 @@
 
     <header>
         <h1>PyTorch Cheatsheet</h1>
-        <p class="subtitle">深度学习框架常用指令参考 v2.x</p>
     </header>
 
     <main>
@@ -212,12 +211,16 @@
         <div class="section">
             <h2>张量创建 (Tensor Creation)</h2>
             <div class="item">
-                <span class="cmd">torch.tensor([1, 2, 3])</span>
-                <span class="desc">从列表数据直接创建张量</span>
+                <span class="cmd">torch.tensor(data, dtype=None, device=None)</span>
+                <span class="desc">用列表数据创建张量，总是创建一个新的拷贝<br>要使用torch.tensor，不使用torch.Tensor<br>torch.tensor能自动推断数据类型<br>可输入元组，列表，numpy数组，标量，布尔值，其他张量<br>初始化梯度为0</span>
             </div>
             <div class="item">
-                <span class="cmd">torch.Tensor([1, 2, 3])</span>
-                <span class="desc">张量构造器 (默认 float32)</span>
+                <span class="cmd">torch.as_tensor(data, dtype=None, device=None)</span>
+                <span class="desc">尽量零拷贝构造张量 (可指定类型和设备)，稍微快一点<br>Shares memory with the input if possible<br>保留过去的梯度信息<br>注意，因为可能共享内存，所以一改全改！修改原本的ndarray也会导致tensor改变！</span>
+            </div>
+            <div class="item">
+                <span class="cmd">empty = torch.tensor(())</span>
+                <span class="desc">创建空张量，不初始化<br>empty_err = torch.tensor()会报错</span>
             </div>
             <div class="item">
                 <span class="cmd">torch.zeros(2, 3)</span>
@@ -269,16 +272,12 @@
                 <span class="desc">获取数据类型 (如 torch.float32)</span>
             </div>
             <div class="item">
-                <span class="cmd">torch.float32 / torch.bfloat16 / torch.long</span>
+                <span class="cmd">torch.float32 = torch.float<br>torch.float64 = torch.double<br>torch.bfloat16 : SEM=1-8-7<br>torch.int64 = torch.long<br>torch.int32 = torch.int<br>torch.uint8<br>torch.bool</span>
                 <span class="desc">常用 dtype 常量</span>
             </div>
             <div class="item">
                 <span class="cmd">torch.FloatTensor / torch.LongTensor</span>
-                <span class="desc">旧式类型构造器 (不推荐但常见)</span>
-            </div>
-            <div class="item">
-                <span class="cmd">torch.bool / torch.uint8</span>
-                <span class="desc">布尔与字节类型</span>
+                <span class="desc">旧式类型构造器，参数反直觉，不推荐使用</span>
             </div>
             <div class="item">
                 <span class="cmd">t.device</span>
@@ -299,10 +298,6 @@
             <div class="item">
                 <span class="cmd">torch.from_numpy(arr)</span>
                 <span class="desc">NumPy 转 Tensor (共享内存)</span>
-            </div>
-            <div class="item">
-                <span class="cmd">torch.as_tensor(data, dtype=None, device=None)</span>
-                <span class="desc">尽量零拷贝构造张量 (可指定类型和设备)</span>
             </div>
             <div class="item">
                 <span class="cmd">torch.is_tensor(x)</span>
@@ -343,7 +338,7 @@
             </div>
             <div class="item">
                 <span class="cmd">t.squeeze(dim)</span>
-                <span class="desc">去除指定的大小为 1 的维度</span>
+                <span class="desc">去除指定的大小为 1 的维度<br>如果dim是None，则去除所有大小为 1 的维度<br>如果这个维度大小不是1，则不改变<br>如果向量本身的尺寸是[1]，则会有unexpected errors<br>不重新分配内存！！</span>
             </div>
             <div class="item">
                 <span class="cmd">t.unsqueeze(dim)</span>
@@ -351,23 +346,23 @@
             </div>
             <div class="item">
                 <span class="cmd">torch.cat([t1, t2], dim=0)</span>
-                <span class="desc">沿指定维度拼接张量</span>
+                <span class="desc">沿指定维度拼接张量<br>拼接过程不产生新的维度，只是扩充已有维度的大小<br>除了需要拼接的那个维度，其他维度的大小必须相同</span>
             </div>
             <div class="item">
                 <span class="cmd">torch.stack([t1, t2], dim=0)</span>
-                <span class="desc">沿新维度堆叠张量</span>
+                <span class="desc">沿新维度堆叠张量<br>需要输入shape相同的几个张量<br>产生新的维度，有几个张量，新的维度的大小就是几</span>
             </div>
             <div class="item">
                 <span class="cmd">torch.split(t, split_size_or_sections, dim=0)</span>
-                <span class="desc">按指定大小或段数切分</span>
+                <span class="desc">按指定大小或段数切分<br>如果split_size_or_sections是int，则按大小切分，最后一段可能小于指定尺寸<br>如果split_size_or_sections是list，则按段数切分，list里的数字加起来必须等于这个维度的大小<br>输出的划分结果是个元组</span>
             </div>
             <div class="item">
                 <span class="cmd">torch.chunk(t, chunks, dim=0)</span>
-                <span class="desc">平均切分为若干块</span>
+                <span class="desc">平均切分为若干块<br>试图将输入张量沿着指定维度平均切分为chunks块<br>如果不能整除，则最后一块会小于其他块<br>返回的chunk数量可能小于指定数量<br>输出的是一个元组</span>
             </div>
             <div class="item">
                 <span class="cmd">t.flatten(start_dim=1)</span>
-                <span class="desc">展平张量 (常用于全连接层前)</span>
+                <span class="desc">展平张量 (常用于全连接层前)<br>start_dim是开始展平的维度，之前的维度保持不变</span>
             </div>
         </div>
 
@@ -404,18 +399,18 @@
             </div>
             <div class="item">
                 <span class="cmd">torch.where(cond, a, b)</span>
-                <span class="desc">按条件选择元素</span>
+                <span class="desc">按条件选择元素，类似三目运算符<br>cond是条件，a是True时的值，b是False时的值<br>返回的是一个张量，形状与cond相同</span>
             </div>
             <div class="item">
-                <span class="cmd">torch.equal(a, b) / torch.all(a == b)</span>
+                <span class="cmd">torch.equal(a, b)<br>torch.all(a == b)</span>
                 <span class="desc">张量整体相等判断</span>
             </div>
             <div class="item">
-                <span class="cmd">torch.linalg.norm(t, dim=-1)</span>
-                <span class="desc">向量或矩阵范数</span>
+                <span class="cmd">torch.linalg.norm(t, dim=-1, ord=2)</span>
+                <span class="desc">向量或矩阵范数<br>dim是一个整数的话，就是求向量L2范数<br>dim是一个2-tuple的话，就是求矩阵的Frobenius范数<br>dim和ord都缺省的话，就是展平求向量L2范数<br>dim=-1就是求最后一维的范数</span>
             </div>
             <div class="item">
-                <span class="cmd">torch.exp(t) / torch.log(t)</span>
+                <span class="cmd">torch.exp(t)<br>torch.log(t)</span>
                 <span class="desc">指数与对数</span>
             </div>
             <div class="item">
@@ -436,6 +431,10 @@
         <div class="section">
             <h2>神经网络层 (torch.nn)</h2>
             <div class="item">
+                <span class="cmd">self.xxx = nn.* <br>或 nn.ModuleList <br>或 nn.ModuleDict <br>或使用 register_module</span>
+                <span class="desc">注册：只需要将子模块赋值给父模块的属性即可<br>可见：已注册子模块会被 <code>parameters()</code>、<code>state_dict()</code>、<code>to()</code>、<code>train()</code>/<code>eval()</code> 等统一遍历；普通 <code>list</code>/<code>dict</code> 里的层不会注册，优化器与设备迁移也看不到。</span>
+            </div>
+            <div class="item">
                 <span class="cmd">class Net(nn.Module):</span>
                 <span class="desc">自定义模型基类</span>
             </div>
@@ -445,19 +444,23 @@
             </div>
             <div class="item">
                 <span class="cmd">nn.Sequential(...)</span>
-                <span class="desc">顺序容器，快速搭建模型</span>
+                <span class="desc">顺序容器，快速搭建模型<br>输入一系列子模块，或者 OrderedDict of name-module pairs</span>
             </div>
             <div class="item">
                 <span class="cmd">nn.ModuleList([...]) / nn.ModuleDict({...})</span>
-                <span class="desc">模块集合容器</span>
+                <span class="desc">模块集合容器 用来容纳子模块的List和Dict</span>
             </div>
             <div class="item">
                 <span class="cmd">nn.Parameter(torch.zeros(...))</span>
-                <span class="desc">可训练参数</span>
+                <span class="desc">输入一个tensor，得到可训练的tensor<br>包装的目的是将tensor注册为模型参数，能被优化器自动更新<br>默认requires_grad=True，表示在反向传播时自动计算梯度</span>
             </div>
             <div class="item">
-                <span class="cmd">nn.LayerNorm(hidden)</span>
-                <span class="desc">层归一化</span>
+                <span class="cmd">model.parameters()</span>
+                <span class="desc">得到一个迭代器，迭代器中包含所有可训练的参数<br>可以用来遍历参数，可以传入优化器</span>
+            </div>
+            <div class="item">
+                <span class="cmd">nn.LayerNorm(normalized_shape)</span>
+                <span class="desc">层归一化：在单个样本的每个特征层上进行归一化，然后在进行缩放和平移<br>normalized_shape是归一化的维度，需要是input_shape的后缀</span>
             </div>
             <div class="item">
                 <span class="cmd">nn.Dropout(p=0.1)</span>
@@ -683,7 +686,7 @@
             </div>
             <div class="item">
                 <span class="cmd">for p_tgt, p in zip(target.parameters(), net.parameters()):
-    p_tgt.data.copy_(p_tgt.data * (1 - tau) + p.data * tau)</span>
+                    p_tgt.data.copy_(p_tgt.data * (1 - tau) + p.data * tau)</span>
                 <span class="desc">目标网络软更新 (Soft Update)</span>
             </div>
             <div class="item">
