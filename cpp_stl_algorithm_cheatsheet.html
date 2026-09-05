@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ STL &amp; algorithm Cheatsheet</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-primary: #222b2a;
+            --text-secondary: #52615f;
+            --accent-color: #0f766e;
+            --accent-soft: #dff3ef;
+            --code-bg: #eef8f6;
+            --code-text: #123c38;
+            --line-color: #d8e3e1;
+            --warning-bg: #fff6dc;
+            --warning-text: #69500b;
+            --border-radius: 2px;
+            --font-family: "Segoe UI", "Microsoft YaHei", Roboto, Arial, sans-serif;
+            --code-font: "Cascadia Code", "Consolas", "SFMono-Regular", monospace;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #18201f;
+                --text-primary: #e5eeec;
+                --text-secondary: #b4c4c0;
+                --accent-color: #62c7bb;
+                --accent-soft: #203e3a;
+                --code-bg: #223835;
+                --code-text: #ddf4ef;
+                --line-color: #344945;
+                --warning-bg: #3f361a;
+                --warning-text: #ffe6a0;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-size: 11px;
+            line-height: 1.24;
+            padding: 9px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 7px;
+            flex-shrink: 0;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 6px;
+        }
+
+        h1 {
+            font-size: 22px;
+            line-height: 1;
+            color: var(--accent-color);
+            font-weight: 750;
+            letter-spacing: 0;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .quick-note {
+            margin-bottom: 7px;
+            padding: 4px 7px;
+            border-left: 3px solid var(--accent-color);
+            background: var(--accent-soft);
+            color: var(--text-primary);
+            font-size: 10.5px;
+            line-height: 1.3;
+        }
+
+        main {
+            column-count: 6;
+            column-gap: 14px;
+            column-rule: 1px solid var(--line-color);
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 10px;
+        }
+
+        @media (max-width: 1700px) { main { column-count: 5; } }
+        @media (max-width: 1400px) { main { column-count: 4; } }
+        @media (max-width: 1050px) { main { column-count: 3; } }
+        @media (max-width: 760px) { main { column-count: 2; } }
+        @media (max-width: 520px) {
+            body { padding: 10px; }
+            header { display: block; }
+            .subtitle { display: block; margin-top: 4px; white-space: normal; }
+            main { column-count: 1; }
+        }
+
+        .section {
+            padding: 0;
+            margin-bottom: 12px;
+            break-inside: auto;
+        }
+
+        .section h2 {
+            color: var(--accent-color);
+            font-size: 14px;
+            line-height: 1.2;
+            margin-bottom: 4px;
+            font-weight: 750;
+            break-after: avoid;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column-reverse;
+            margin-bottom: 5px;
+            break-inside: avoid;
+        }
+
+        .item:last-child { margin-bottom: 0; }
+
+        .cmd {
+            display: block;
+            width: 100%;
+            margin-top: 1px;
+            padding: 2px 5px;
+            border-left: 3px solid rgba(15, 118, 110, .36);
+            border-radius: var(--border-radius);
+            background: var(--code-bg);
+            color: var(--code-text);
+            font: 10.5px/1.22 var(--code-font);
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .desc {
+            color: var(--text-primary);
+            font-size: 10.5px;
+            line-height: 1.22;
+            font-weight: 520;
+        }
+
+        .desc code,
+        .key {
+            padding: 0 2px;
+            border-radius: 2px;
+            background: rgba(15, 118, 110, .10);
+            color: var(--accent-color);
+            font: 10px var(--code-font);
+        }
+
+        .muted { color: var(--text-secondary); font-weight: 400; }
+
+        .warning {
+            margin-top: 4px;
+            padding: 3px 5px;
+            border-left: 3px solid #c59a20;
+            background: var(--warning-bg);
+            color: var(--warning-text);
+            font-size: 10px;
+        }
+
+        @media print {
+            body { background: #fff; min-height: auto; padding: 0; }
+            main { column-count: 6; overflow: visible; }
+            .cmd { background: #edf7f5 !important; -webkit-print-color-adjust: exact; }
+            .quick-note, .warning { -webkit-print-color-adjust: exact; }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>C++ STL / algorithm Cheatsheet</h1>
+        <p class="subtitle">手撕代码与力扣题目高频操作 · C++17 · 代码默认 <span class="key">using namespace std</span></p>
+    </header>
+
+    <div class="quick-note">
+        看到“有序数组”优先想 <span class="key">sort + lower_bound</span>；看到“动态最值”优先想 <span class="key">priority_queue</span>；删除连续值使用 <span class="key">erase(remove(...))</span>。
+    </div>
+
+    <main>
+        <div class="section">
+            <h2>题目模板 · 直接开写</h2>
+            <div class="item"><span class="cmd">#include &lt;algorithm&gt;  // sort, find, lower_bound, ...
+#include &lt;numeric&gt;    // accumulate, iota, gcd, ...
+#include &lt;queue&gt;      // queue, priority_queue</span><span class="desc">这页高频函数的主要头文件；<code>vector</code>、<code>map</code>、<code>set</code> 等容器也可单独包含对应头文件</span></div>
+            <div class="item"><span class="cmd">using namespace std;
+using ll = long long;</span><span class="desc">减少题目代码噪声；数值可能溢出 <code>int</code> 时使用 <code>long long</code></span></div>
+            <div class="item"><span class="cmd">ios::sync_with_stdio(false);
+cin.tie(nullptr);</span><span class="desc">关闭 C/C++ 流同步并解除绑定，输入量大时常用</span></div>
+            <div class="item"><span class="cmd">for (auto &amp;x : v) { /* x 可修改 */ }
+for (const auto &amp;x : v) { /* 只读 */ }</span><span class="desc">范围 <code>for</code>；不需要下标时最简洁</span></div>
+            <div class="item"><span class="cmd">auto [a, b] = p;
+auto [it, inserted] = s.insert(x);</span><span class="desc">结构化绑定，拆 <code>pair</code> 或函数返回值</span></div>
+        </div>
+
+        <div class="section">
+            <h2>vector · 动态数组</h2>
+            <div class="item"><span class="cmd">vector&lt;int&gt; v;
+vector&lt;int&gt; v(n);
+vector&lt;int&gt; v(n, value);</span><span class="desc">空数组、长度为 <code>n</code> 的零初始化数组、填充值数组</span></div>
+            <div class="item"><span class="cmd">v.size();  v.empty();
+v.front(); v.back();
+v[i];</span><span class="desc">长度、判空、首尾元素和下标访问</span></div>
+            <div class="item"><span class="cmd">v.push_back(x);
+v.pop_back();</span><span class="desc">尾部增删；访问或删除前先确认非空</span></div>
+            <div class="item"><span class="cmd">v.insert(v.begin() + i, x);</span><span class="desc">在位置前插入一个元素，返回插入位置迭代器</span></div>
+            <div class="item"><span class="cmd">v.erase(v.begin() + i);
+v.erase(v.begin() + l, v.begin() + r);</span><span class="desc">删除单个元素或半开区间 <code>[l, r)</code>；返回下一个有效迭代器</span></div>
+            <div class="item"><span class="cmd">v.resize(n);</span><span class="desc">改变元素个数；新增加的元素使用默认值</span></div>
+            <div class="item"><span class="cmd">v.clear();</span><span class="desc">清空全部元素；容量通常保留</span></div>
+            <div class="item"><span class="cmd">v.erase(remove(v.begin(), v.end(), x), v.end());</span><span class="desc">删除所有等于 <code>x</code> 的元素；<code>remove</code> 只搬移，必须配合 <code>erase</code></span></div>
+        </div>
+
+        <div class="section">
+            <h2>string · 字符串</h2>
+            <div class="item"><span class="cmd">string s = "abc";
+string s(n, 'x');
+getline(cin, s);</span><span class="desc">构造字符串；<code>getline</code> 读取包含空格的一整行</span></div>
+            <div class="item"><span class="cmd">s.size(); s.empty(); s[i];
+s += t; s.push_back(c);</span><span class="desc">长度、访问、拼接和追加字符</span></div>
+            <div class="item"><span class="cmd">s.substr(pos, len);
+s.find("abc");
+s.find('x') == string::npos;</span><span class="desc">截取、查找；未找到时返回 <code>string::npos</code></span></div>
+            <div class="item"><span class="cmd">s.erase(pos, len);
+s.insert(pos, "abc");</span><span class="desc">按位置删除或插入；省略 <code>len</code> 可删除到末尾</span></div>
+            <div class="item"><span class="cmd">stoi(s); stoll(s);
+to_string(x);</span><span class="desc">字符串与整数/长整数互转；输入保证格式正确时最方便</span></div>
+        </div>
+
+        <div class="section">
+            <h2>stack / queue</h2>
+            <div class="item"><span class="cmd">stack&lt;int&gt; st;
+st.push(x); st.top(); st.pop();</span><span class="desc">后进先出；<code>pop</code> 只删除，不返回元素</span></div>
+            <div class="item"><span class="cmd">queue&lt;int&gt; q;
+q.push(x); q.front(); q.pop();</span><span class="desc">先进先出；BFS、拓扑排序常用</span></div>
+        </div>
+
+        <div class="section">
+            <h2>priority_queue · 堆</h2>
+            <div class="item"><span class="cmd">priority_queue&lt;int&gt; pq;
+pq.push(x); pq.top(); pq.pop();</span><span class="desc">默认大根堆；<code>top</code> 是当前最大值，插入/删除为 <code>O(log n)</code></span></div>
+            <div class="item"><span class="cmd">priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; pq;</span><span class="desc">小根堆；第三模板参数是比较器</span></div>
+            <div class="item"><span class="cmd">using P = pair&lt;int, int&gt;;
+priority_queue&lt;P, vector&lt;P&gt;, greater&lt;P&gt;&gt; pq;</span><span class="desc">对 <code>pair</code> 建小根堆：先比较 <code>first</code>，再比较 <code>second</code></span></div>
+        </div>
+
+        <div class="section">
+            <h2>set · 有序集合</h2>
+            <div class="item"><span class="cmd">set&lt;int&gt; s;
+s.insert(x); s.erase(x);</span><span class="desc"><code>set</code> 去重且自动升序；按值插入或删除</span></div>
+            <div class="item"><span class="cmd">auto it = s.find(x);
+if (it != s.end()) { ... }</span><span class="desc">查找元素；未找到时返回 <code>end</code></span></div>
+            <div class="item"><span class="cmd">auto it = s.lower_bound(x);
+auto jt = s.upper_bound(x);</span><span class="desc"><code>lower_bound</code> 找首个 <code>&gt;= x</code>；<code>upper_bound</code> 找首个 <code>&gt; x</code></span></div>
+        </div>
+
+        <div class="section">
+            <h2>map / unordered_map · 键值表</h2>
+            <div class="item"><span class="cmd">map&lt;string, int&gt; mp;
+mp[key]++;</span><span class="desc"><code>map</code> 按键有序；<code>operator[]</code> 不存在时会先插入默认值，计数最常用</span></div>
+            <div class="item"><span class="cmd">if (auto it = mp.find(key); it != mp.end()) {
+    ...
+}</span><span class="desc">查找键是否存在；未找到时返回 <code>end</code></span></div>
+            <div class="item"><span class="cmd">mp.erase(key);</span><span class="desc">按键删除；不存在时不报错</span></div>
+        </div>
+
+        <div class="section">
+            <h2>sort · 排序</h2>
+            <div class="item"><span class="cmd">sort(v.begin(), v.end());
+sort(v.begin(), v.end(), greater&lt;int&gt;{});</span><span class="desc">升序/降序排序，平均 <code>O(n log n)</code>；默认不保证相等元素相对顺序</span></div>
+            <div class="item"><span class="cmd">sort(a.begin(), a.end());
+sort(a.begin(), a.end(), [](const auto &amp;x, const auto &amp;y) {
+    return x.second &lt; y.second;
+});</span><span class="desc">二维数组、<code>pair</code>、结构体都可直接传 lambda</span></div>
+        </div>
+
+        <div class="section">
+            <h2>binary search · 二分查找</h2>
+            <div class="item"><span class="cmd">auto it = lower_bound(v.begin(), v.end(), x);
+int pos = it - v.begin();</span><span class="desc">首个 <code>&gt;= x</code> 的位置；不存在时为 <code>end</code>，常用于插入点</span></div>
+            <div class="item"><span class="cmd">auto it = upper_bound(v.begin(), v.end(), x);
+int pos = it - v.begin();</span><span class="desc">首个 <code>&gt; x</code> 的位置；有序数组中 <code>x</code> 的个数为 <code>upper - lower</code></span></div>
+            <div class="warning"><code>lower_bound/upper_bound</code> 要求区间已按同一规则排序；随机访问容器才能用迭代器相减得到下标。</div>
+        </div>
+
+        <div class="section">
+            <h2>min / max / element</h2>
+            <div class="item"><span class="cmd">min(a, b); max(a, b);</span><span class="desc">取两个值中的最小/最大值；多个值可嵌套调用</span></div>
+            <div class="item"><span class="cmd">auto it = min_element(v.begin(), v.end());
+auto jt = max_element(v.begin(), v.end());</span><span class="desc">返回最小/最大元素迭代器；空区间不要解引用</span></div>
+            <div class="item"><span class="cmd">swap(a, b);</span><span class="desc">交换两个值；交换容器或变量时直接使用</span></div>
+        </div>
+
+        <div class="section">
+            <h2>reverse / unique</h2>
+            <div class="item"><span class="cmd">reverse(v.begin(), v.end());</span><span class="desc">原地反转整个区间</span></div>
+            <div class="item"><span class="cmd">sort(v.begin(), v.end());
+v.erase(unique(v.begin(), v.end()), v.end());</span><span class="desc">数组去重的标准写法；结果仍保持升序</span></div>
+            <div class="item"><span class="cmd">v.erase(remove(v.begin(), v.end(), x), v.end());</span><span class="desc">删除所有等于 <code>x</code> 的元素；<code>remove</code> 必须配合 <code>erase</code></span></div>
+        </div>
+
+        <div class="section">
+            <h2>fill · 区间填充</h2>
+            <div class="item"><span class="cmd">fill(v.begin(), v.end(), x);</span><span class="desc">把区间所有元素设为同一个值</span></div>
+        </div>
+
+        <div class="section">
+            <h2>find / count · 条件查找</h2>
+            <div class="item"><span class="cmd">count(v.begin(), v.end(), x);
+count_if(v.begin(), v.end(), pred);</span><span class="desc">统计等于某值或满足谓词的元素个数</span></div>
+            <div class="item"><span class="cmd">auto it = find(v.begin(), v.end(), x);
+auto jt = find_if(v.begin(), v.end(), pred);</span><span class="desc">寻找首个匹配元素；未找到返回 <code>end</code></span></div>
+        </div>
+
+        <div class="section">
+            <h2>&lt;numeric&gt; · 题目里的数值工具</h2>
+            <div class="item"><span class="cmd">iota(v.begin(), v.end(), 0);</span><span class="desc">从起始值开始连续填充：<code>0, 1, 2, ...</code>；下标初始化很方便</span></div>
+            <div class="item"><span class="cmd">accumulate(v.begin(), v.end(), 0LL);</span><span class="desc">求和；初值写 <code>0LL</code> 防止 <code>int</code> 溢出</span></div>
+            <div class="item"><span class="cmd">gcd(a, b); lcm(a, b);</span><span class="desc">C++17 最大公约数与最小公倍数；需 <code>&lt;numeric&gt;</code></span></div>
+        </div>
+
+    </main>
+</body>
+
+</html>
