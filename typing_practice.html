@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Typing Practice</title>
+  <style>
+    @font-face {
+      font-family: "Maple Mono NF CN";
+      src: url("./fonts/MapleMono-NF-CN-Regular.ttf") format("truetype");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    :root {
+      color-scheme: light;
+      --bg: #fafafa;
+      --text: #171717;
+      --muted: #8a8a8a;
+      --line: #e5e5e5;
+      --ok: #16833a;
+      --bad: #c9362b;
+      --typing-font: "Maple Mono NF CN", ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      width: min(760px, calc(100vw - 32px));
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 42px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    input[type="checkbox"] {
+      width: 34px;
+      height: 18px;
+      accent-color: var(--text);
+      cursor: pointer;
+    }
+
+    .desc {
+      min-height: 72px;
+      margin: 0 0 34px;
+      font-size: clamp(24px, 4vw, 38px);
+      line-height: 1.35;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    .command,
+    .typed {
+      min-height: 40px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      font: 24px/1.7 var(--typing-font);
+      letter-spacing: 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .command {
+      margin-bottom: 18px;
+      color: var(--muted);
+    }
+
+    .typed:empty::before {
+      content: "开始输入";
+      color: #b8b8b8;
+    }
+
+    .space {
+      display: inline-block;
+      width: 0.62em;
+      min-height: 1em;
+    }
+
+    .space.ok {
+      background: rgba(22, 131, 58, 0.12);
+    }
+
+    .space.bad {
+      background: rgba(201, 54, 43, 0.14);
+    }
+
+    .caret {
+      display: inline-block;
+      width: 2px;
+      height: 1.15em;
+      margin-left: 2px;
+      vertical-align: -0.18em;
+      background: var(--text);
+      animation: blink 1s steps(1, end) infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .ok {
+      color: var(--ok);
+    }
+
+    .bad {
+      color: var(--bad);
+    }
+
+    .pending {
+      color: #b8b8b8;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #capture {
+      position: fixed;
+      inset: auto auto 0 0;
+      width: 1px;
+      height: 1px;
+      font-family: var(--typing-font);
+      opacity: 0;
+      border: 0;
+      padding: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <main id="app">
+    <div class="top">
+      <span id="meta">0 / 0</span>
+      <label>
+        <input id="showCommand" type="checkbox">
+        显示指令
+      </label>
+    </div>
+    <p id="description" class="desc">正在载入素材</p>
+    <div id="commandLine" class="command hidden"></div>
+    <div id="typedLine" class="typed"></div>
+    <input id="capture" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="输入指令">
+  </main>
+
+  <script src="typing_materials.js"></script>
+  <script>
+    const data = window.TYPING_MATERIALS || { items: [] };
+    const items = (data.items || []).filter((item) => item.command && item.description);
+    const state = {
+      index: -1,
+      current: null,
+      typed: "",
+      completed: 0,
+      locked: false,
+      peekCommand: false,
+      order: shuffle(items.map((_, index) => index))
+    };
+
+    const description = document.getElementById("description");
+    const commandLine = document.getElementById("commandLine");
+    const typedLine = document.getElementById("typedLine");
+    const capture = document.getElementById("capture");
+    const showCommand = document.getElementById("showCommand");
+    const meta = document.getElementById("meta");
+    const app = document.getElementById("app");
+
+    function shuffle(values) {
+      const copy = [...values];
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function escapeHtml(value) {
+      return value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function renderChar(char, className) {
+      if (char === " ") {
+        return `<span class="${className} space">&nbsp;</span>`;
+      }
+
+      return `<span class="${className}">${escapeHtml(char)}</span>`;
+    }
+
+    function nextQuestion() {
+      if (!items.length) {
+        description.textContent = "没有找到可用素材";
+        return;
+      }
+
+      if (state.completed > 0 && state.completed % state.order.length === 0) {
+        state.order = shuffle(items.map((_, index) => index));
+      }
+
+      state.index = state.order[state.completed % state.order.length];
+      state.current = items[state.index];
+      state.typed = "";
+      state.locked = false;
+      capture.value = "";
+      description.textContent = state.current.description;
+      render();
+      capture.focus();
+    }
+
+    function render() {
+      const command = state.current ? state.current.command : "";
+      const typed = state.typed;
+      const visible = showCommand.checked || state.peekCommand;
+      const typedHtml = [...typed].map((char, index) => {
+        const className = char === command[index] ? "ok" : "bad";
+        return renderChar(char, className);
+      }).join("") + '<span class="caret"></span>';
+
+      commandLine.classList.toggle("hidden", !visible);
+      meta.textContent = items.length ? `${state.completed + 1} / ${items.length}` : "0 / 0";
+
+      if (visible) {
+        commandLine.innerHTML = [...command].map((char, index) => {
+          const input = typed[index];
+          const className = input == null ? "pending" : input === char ? "ok" : "bad";
+          return renderChar(char, className);
+        }).join("");
+        typedLine.innerHTML = typedHtml;
+      } else {
+        commandLine.textContent = "";
+        typedLine.innerHTML = typedHtml;
+      }
+    }
+
+    function handleInput() {
+      if (state.locked || !state.current) {
+        return;
+      }
+
+      state.typed = capture.value;
+      render();
+
+      if (state.typed === state.current.command) {
+        state.locked = true;
+        state.completed += 1;
+        window.setTimeout(nextQuestion, 260);
+      }
+    }
+
+    capture.addEventListener("input", handleInput);
+    showCommand.addEventListener("change", () => {
+      render();
+      capture.focus();
+    });
+    app.addEventListener("pointerdown", () => capture.focus());
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !showCommand.checked) {
+        event.preventDefault();
+        if (!state.peekCommand) {
+          state.peekCommand = true;
+          render();
+        }
+      }
+
+      capture.focus();
+    });
+    document.addEventListener("keyup", (event) => {
+      if (event.key === "Escape" && state.peekCommand) {
+        event.preventDefault();
+        state.peekCommand = false;
+        render();
+        capture.focus();
+      }
+    });
+
+    nextQuestion();
+  </script>
+</body>
+</html>
