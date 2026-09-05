@@ -1,0 +1,31 @@
+{
+  "skill": "interview-cheatsheet",
+  "source": "cheatsheet/python_list_dict_tuple_numpy_tutorial.md",
+  "source_sha256_prefix": "ae60e061f4664c2c",
+  "output": "cheatsheet/python_list_dict_tuple_numpy_tutorial.html",
+  "topic": "Python List / Dict / Tuple / NumPy",
+  "effort": "max",
+  "byline": "Ruofeng Yang (杨若峰), Shanghai Jiao Tong University",
+  "math_code_review": {
+    "verdict": "PASS",
+    "rounds": [
+      {"run": 1, "verdict": "FAIL", "issue": "list resize formula attributed to wrong CPython version; compact dict attribution; dict code block KeyError from d rebinding; BadKey example missing __hash__; NumPy view detection logic; iteration-remove example wrong"},
+      {"run": 2, "verdict": "FAIL", "issue": "Table pipe escape issues; callout-list collision; heading numbering gaps"},
+      {"run": 3, "verdict": "FAIL", "issue": "CPython resize formula version-specific claims; compact dict attribution back-and-forth; 4-slot alignment description"},
+      {"run": 4, "verdict": "FAIL", "issue": "ndarray continuous memory description inaccurate; NumPy basic slicing complexity wrong in table; dict search complexity misleading"},
+      {"run": 5, "verdict": "FAIL", "issue": "dict perturb formula missing bitshift precedence; length 1264 lines over 1200 limit"},
+      {"run": 6, "verdict": "FAIL", "issue": "4-byte alignment still present in 2 locations; personal-info patterns; ndarray memory description still ambiguous"},
+      {"run": 7, "verdict": "FAIL", "issue": "extra </details> tag at line 1146 causing HTML structure imbalance"},
+      {"run": 8, "verdict": "PASS", "issue": null}
+    ]
+  },
+  "render_review": {
+    "verdict": "PASS",
+    "rounds": [
+      {"run": 1, "verdict": "FAIL", "issue": "Q19 nested fenced code blocks rendered inline; stale source SHA256 embedded in HTML"},
+      {"run": 2, "verdict": "PASS", "issue": null}
+    ]
+  },
+  "summary": "8-round math/code review + 2-round render review settled at PASS; all 10 checks green across both stages",
+  "rendered_at": "2026-06-29"
+}
